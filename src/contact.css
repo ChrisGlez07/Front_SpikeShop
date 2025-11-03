@@ -1,0 +1,49 @@
+.containerContact {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 15px !important;
+    margin: 0 !important;
+
+}
+
+.colContact {
+    flex: 0 0 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    max-width: 50%;
+    background-color: #b99872;
+}
+
+.colContact2 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    background-color: #d75d5d;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.rowContact {
+    max-width: 100% !important;
+    width: 100% !important;
+    display: flex;
+    flex-wrap: wrap;
+    height: 400px;
+}
+
+.imgContainer {
+    width: 80%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: Url(https://imgs.search.brave.com/1LGi11mYmxXJJxx0iPJfvnKhiA-6OcARFwF6-T3E_m8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvODU3/MTI2MDI0L3Bob3Rv/L2Fib3V0LXVzLXRl/eHQtb24tcGFwZXIt/d29yZC1hYm91dC11/cy1vbi10b3JuLXBh/cGVyLWNvbmNlcHQt/aW1hZ2UuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPWYzME5k/WkNyVXhLWF9xc1hq/UERvRWxxQW9CSnRx/S1E4M2xjajY1LTBN/aDQ9);
+}
+
+.textoContainer {
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
