@@ -2,48 +2,143 @@
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 15px !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f6ede2 0%, #fff5ef 100%);
+}
 
+.rowContact {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.rowContact:hover {
+    transform: scale(1.01);
 }
 
 .colContact {
     flex: 0 0 50%;
-    align-items: center;
-    justify-content: center;
-    display: flex;
     max-width: 50%;
     background-color: #b99872;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
 }
 
 .colContact2 {
     flex: 0 0 50%;
     max-width: 50%;
     background-color: #d75d5d;
-    align-items: center;
+    display: flex;
     justify-content: center;
-    display: flex;
-}
-
-.rowContact {
-    max-width: 100% !important;
-    width: 100% !important;
-    display: flex;
-    flex-wrap: wrap;
-    height: 400px;
+    align-items: center;
+    transition: all 0.4s ease;
 }
 
 .imgContainer {
     width: 80%;
     height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-    background: Url(https://imgs.search.brave.com/1LGi11mYmxXJJxx0iPJfvnKhiA-6OcARFwF6-T3E_m8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvODU3/MTI2MDI0L3Bob3Rv/L2Fib3V0LXVzLXRl/eHQtb24tcGFwZXIt/d29yZC1hYm91dC11/cy1vbi10b3JuLXBh/cGVyLWNvbmNlcHQt/aW1hZ2UuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPWYzME5k/WkNyVXhLWF9xc1hq/UERvRWxxQW9CSnRx/S1E4M2xjajY1LTBN/aDQ9);
+    border-radius: 15px;
+    background: url(https://imgs.search.brave.com/7tuB7PE_8pZokEcZmRfFh-e7Oi5L7ojK4LFtOZ-gT6U/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjIy/MjIzMDYyOS9lcy9m/b3RvL2Rvcy1qJUMz/JUIzdmVuZXMtZW1w/cmVzYXJpb3MtdHJh/YmFqYW5kby1qdW50/b3MtZW4tdW5hLWNv/bXB1dGFkb3JhLXBv/cnQlQzMlQTF0aWwt/ZW4tdW5hLW9maWNp/bmEtbW9kZXJuYS53/ZWJwP2E9MSZiPTEm/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9YkNq/MXM5Q2JfaXpUX0o0/YlNXaVdrV2UxRE9Y/ci1IMXVpWDdHc2h5/T2hXRT0) no-repeat center center/cover;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.imgContainer2 {
+    width: 80%;
+    height: 300px;
+    border-radius: 15px;
+    background: url(https://i.pinimg.com/736x/9f/83/fa/9f83facd6e155ff6486e43f2f181a0de.jpg) no-repeat center center/cover;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.imgContainer:hover,
+.imgContainer2:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .textoContainer {
-    gap: 10px;
-    flex-direction: column;
     display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.textoTitulo1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #781212;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.paragraf1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #3b2b2b;
+    max-width: 80%;
+    line-height: 1.6;
+}
+
+.paragraf2 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #fff;
+    max-width: 80%;
+    line-height: 1.6;
+}
+
+.titulo2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.colContact, .colContact2, .imgContainer, .imgContainer2 {
+    transition: all 0.4s ease-in-out;
+}
+
+
+@media (max-width: 768px) {
+    .colContact, .colContact2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .rowContact {
+        height: auto;
+    }
+
+    .imgContainer, .imgContainer2 {
+        width: 90%;
+        height: 250px;
+    }
+
+    .textoTitulo1, .titulo2 {
+        font-size: 2rem;
+    }
+
+    .paragraf1, .paragraf2 {
+        font-size: 1.1rem;
+    }
 }
