@@ -10,7 +10,6 @@ const Items = () => {
     const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
     const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjI4OTc3MSwiZXhwIjoxNzYyMjkzMzcxfQ.b-P9iGNxJuLi0IotmjO1p2iTJVq46aDdA7LidEfOvDs";
 
-    // Productos predefinidos
     const Articulos = [
         {
             name: "Tenis Running Ultra",
@@ -45,8 +44,6 @@ const Items = () => {
             badge: "Premium"
         },
     ];
-
-    // Función para obtener productos del API
     const fetchProductos = async () => {
         try {
             setLoading(true);

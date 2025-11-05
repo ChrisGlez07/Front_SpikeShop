@@ -50,7 +50,6 @@ const Register = () => {
         console.log("Registro exitoso:", data);
         setSuccess("Usuario registrado exitosamente");
         
-        // Opcional: redirigir al login después de 2 segundos
         setTimeout(() => {
           navigate('/login');
         }, 2000);

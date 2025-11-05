@@ -34,8 +34,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${APP_TOKEN}`,
-          // También puedes usar solo uno de estos:
-          // 'App-Token': APP_TOKEN
+      
         },
         body: JSON.stringify({
           email: email,
