@@ -78,20 +78,15 @@ const Items = () => {
 
     return (
         <div className="items-page-container">
-            {/* Filtros en el lado izquierdo */}
             <div className="filters-sidebar">
                 <Filters/>
             </div>
-
-            {/* Contenido principal en el lado derecho */}
             <div className="items-main-content">
-                {/* Header de la sección */}
                 <div className="items-header">
                     <h1 className="items-title">Nuestra Colección</h1>
                     <p className="items-subtitle">Descubre los mejores productos con calidad premium y diseños exclusivos</p>
                 </div>
 
-                {/* Grid de productos */}
                 <div className="container">
                     <div className="row">
                         {Articulos.map((articulo, index) => (

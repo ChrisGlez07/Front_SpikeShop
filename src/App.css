@@ -94,13 +94,11 @@ body,
   min-height: calc(100vh - 80px);
   background-color: #b99872;
   padding: 20px;
+
 }
 
-.userLogin,
-.PasswordLogin,
-.userRegister,
-.emailRegister,
-.passwordRegister {
+.form-container
+{
   width: 100%;
   max-width: 400px;
   margin-bottom: 15px;
@@ -323,9 +321,7 @@ body,
   display: flex;
   margin-bottom: 30px;
   flex: 0 0 25%;
-  /* 4 ítems */
   max-width: 25%;
-  /* 4 ítems */
 }
 
 /* Estilos para las tarjetas */
@@ -551,7 +547,6 @@ body,
   }
 }
 
-/* Animación de carga para imágenes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -571,4 +566,72 @@ body,
   height: 140px;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.error-message {
+  color: red;
+  margin: 10px 0;
+}
+
+.success-message {
+  color: green;
+  margin: 10px 0;
+}
+.nav-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+/* Estados de carga */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    text-align: center;
+}
+
+.loading-container p {
+    margin-top: 15px;
+    color: #666;
+}
+
+/* Alertas */
+.alert {
+    margin: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Responsive */
+.items-page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.filters-sidebar {
+    width: 300px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-right: 1px solid #dee2e6;
+}
+
+.items-main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .items-page-container {
+        flex-direction: column;
+    }
+    
+    .filters-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+    }
 }

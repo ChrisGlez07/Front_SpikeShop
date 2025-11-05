@@ -8,7 +8,7 @@ const Card = ({ producto }) => {
         <div className="product-column">
             <div className="card">
                 <div className="card-img-container">
-                    <img src={img} className="card-img-top" alt={name}/>
+                    <img src={img} className="card-img-top" alt={name} />
                     {badge && <span className="product-badge">{badge}</span>}
                 </div>
                 <div className="card-body">

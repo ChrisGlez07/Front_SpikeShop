@@ -4,7 +4,7 @@ const Filters = () => {
   return (
     <div className="filters-section">
       <h5>Filters</h5>
-    
+    <img url='https://futbol.fandom.com/es/wiki/Colo-Colo'> </img>
       <div className="filter-group">
         <h6>Category</h6>
         <div className="form-check">
