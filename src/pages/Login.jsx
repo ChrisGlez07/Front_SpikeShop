@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Register from './Register.jsx';
-import '../App.css';
+import '../Login.css';
 
 const Login = () => {  
   const [email, setEmail] = useState("alex@example.com");

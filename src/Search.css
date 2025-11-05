@@ -1,0 +1,11 @@
+/* ===== SEARCH.JSX ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  padding: 5px 10px;
+  max-width: 300px;
+  width: 100%;
+  background-color: #ffffff;
+}

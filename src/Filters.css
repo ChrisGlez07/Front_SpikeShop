@@ -1,0 +1,43 @@
+/* ===== FILTRO.JSX ===== */
+.filters-section {
+  margin-bottom: 30px;
+}
+
+.filter-group {
+  margin-bottom: 25px;
+}
+
+.filter-group h6 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.form-check {
+  margin-bottom: 10px;
+}
+
+.form-check-input {
+  margin-right: 8px;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.size-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.size-options .btn {
+  min-width: 40px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+}
+
+.filter-actions {
+  margin-top: 20px;
+}
