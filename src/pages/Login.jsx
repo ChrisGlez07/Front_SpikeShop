@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjI4OTc3MSwiZXhwIjoxNzYyMjkzMzcxfQ.b-P9iGNxJuLi0IotmjO1p2iTJVq46aDdA7LidEfOvDs";
+  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM1NzI3MywiZXhwIjoxNzYyMzYwODczfQ.wHkzAozSNnJHtJcCo926Y5dXinvpmT2jDyhd4ykeFH4";
 
   useEffect(() => {
     console.log(`Email: ${email}`);
@@ -29,7 +29,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${API_BASE_URL}/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

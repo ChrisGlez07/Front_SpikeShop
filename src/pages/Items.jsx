@@ -6,9 +6,9 @@ import "../Items.css";
 const Items = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(false);
-    
+
     const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-    const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjI4OTc3MSwiZXhwIjoxNzYyMjkzMzcxfQ.b-P9iGNxJuLi0IotmjO1p2iTJVq46aDdA7LidEfOvDs";
+    const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM2MTEyNiwiZXhwIjoxNzYyMzY0NzI2fQ.GE16R7CcFzXXwrZ0_48eboOm68cGYTloJYMn7F0tm4o";
 
     const Articulos = [
         {
@@ -47,21 +47,23 @@ const Items = () => {
     const fetchProductos = async () => {
         try {
             setLoading(true);
-            
-            const response = await fetch(`${API_BASE_URL}/items`, {
+            console.log(`${API_BASE_URL}/productos/items`);
+            const response = await fetch(`${API_BASE_URL}/productos/items`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true",
                     "Authorization": `Bearer ${APP_TOKEN}`,
                 },
             });
-
+            console.log(response)
+            console.log(data)
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
             }
 
             const data = await response.json();
-
+            console.log(data);
             if (data.success) {
                 const itemsFromAPI = data.items || data.data || [];
 
@@ -78,16 +80,16 @@ const Items = () => {
                     }));
 
                     setProductos(productosMapeados);
-                    console.log("✅ Conexión exitosa con el API. Productos cargados desde el servidor.");
+                    console.log("Conexión exitosa con el API. Productos cargados desde el servidor.");
                 } else {
-                    console.log("⚠️ API respondió sin productos. Cargando productos predefinidos.");
+                    console.log("API respondió sin productos. Cargando productos predefinidos.");
                     setProductos(Articulos);
                 }
             } else {
                 throw new Error(data.message || "Error en la respuesta del API");
             }
         } catch (error) {
-            console.error("❌ No se pudo conectar con el API. Se mostrarán productos predefinidos.");
+            console.error(" No se pudo conectar con el API. Se mostrarán productos predefinidos.");
             setProductos(Articulos);
         } finally {
             setLoading(false);
@@ -114,8 +116,8 @@ const Items = () => {
                         {loading
                             ? "Cargando productos..."
                             : productos.length > 0
-                            ? `Descubre ${productos.length} productos con calidad premium`
-                            : "No hay productos disponibles"}
+                                ? `Descubre ${productos.length} productos con calidad premium`
+                                : "No hay productos disponibles"}
                     </p>
                 </div>
 

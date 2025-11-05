@@ -12,7 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjI4OTc3MSwiZXhwIjoxNzYyMjkzMzcxfQ.b-P9iGNxJuLi0IotmjO1p2iTJVq46aDdA7LidEfOvDs";
+  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM1NzI3MywiZXhwIjoxNzYyMzYwODczfQ.wHkzAozSNnJHtJcCo926Y5dXinvpmT2jDyhd4ykeFH4";
 
   useEffect(() => {
     console.log(`Username: ${username}`);
@@ -31,19 +31,20 @@ const Register = () => {
     setSuccess("");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${APP_TOKEN}`,
         },
+        
         body: JSON.stringify({
           username: username,
           email: email,
           password: password
         })
       });
-
+       console.log(response);
       const data = await response.json();
 
       if (response.ok && data.success) {
