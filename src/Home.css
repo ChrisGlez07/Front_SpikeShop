@@ -1,47 +1,97 @@
 .hero-banner {
-  background: url(https://i.pinimg.com/736x/9d/05/14/9d0514609a8b39c01e96d22082c91cf9.jpg) no-repeat center center/cover;
-  color: rgb(0, 0, 0);
-  padding: 80px 0;
+  background-color: #ffdeb7;
+  color: #000;
   text-align: center;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  min-height: calc(100vh - 80px);
-  width: 100%;
-  margin: 0;
+  padding: 10px 20px 10px;
+  margin-bottom: 20px;
 }
 
 .hero-content h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
 }
 
 .hero-content p {
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  color: #8a8686;
 }
 
-.services {
-  padding: 40px 0;
-  background: #ffedd8;
+/* Carrusel */
+.carousel-section {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.services .container {
-  max-width: 100% !important;
+.carousel-item img {
+  height: 400px;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {
-  .hero-banner {
-    min-height: 70vh;
-    padding: 40px 0;
-  }
-
   .hero-content h2 {
     font-size: 2rem;
   }
 
   .hero-content p {
     font-size: 1rem;
+  }
+
+  .carousel-item img {
+    height: 250px;
+  }
+}
+
+/* --- SERVICES SECTION --- */
+.services {
+  background-color: #ffdeb7;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.services .service-item {
+  margin-bottom: 30px;
+}
+
+.services h4 {
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.services p {
+  color: #555;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Línea separadora opcional arriba */
+.services::before {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background-color: #ffdeb7;
+  margin: 0 auto 40px;
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services {
+    padding: 40px 20px;
+  }
+
+  .services h4 {
+    font-size: 1.1rem;
+  }
+
+  .services p {
+    font-size: 0.9rem;
   }
 }

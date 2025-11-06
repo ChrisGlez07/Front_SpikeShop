@@ -68,6 +68,7 @@ html, body, #root {
 }
 
 .nav-link {
+  color: #000 !important; /* texto negro */
   text-decoration: none;
   color: white;
   font-weight: 400;
