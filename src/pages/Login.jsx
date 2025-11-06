@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM1NzI3MywiZXhwIjoxNzYyMzYwODczfQ.wHkzAozSNnJHtJcCo926Y5dXinvpmT2jDyhd4ykeFH4";
+  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM5NTgzNywiZXhwIjoxNzYyMzk5NDM3fQ.gaxK0EhX8HGAPxFOlqwaQA_QKggsa80brQARGTWU99w";
 
   useEffect(() => {
     console.log(`Email: ${email}`);

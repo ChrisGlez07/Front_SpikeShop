@@ -8,7 +8,7 @@ const Items = () => {
     const [loading, setLoading] = useState(false);
 
     const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-    const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM2MTEyNiwiZXhwIjoxNzYyMzY0NzI2fQ.GE16R7CcFzXXwrZ0_48eboOm68cGYTloJYMn7F0tm4o";
+    const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM5ODg2OSwiZXhwIjoxNzYyNDAyNDY5fQ.aL0NV706K7KnSuHoA2sCzTL1Mly92FrUAerJTH4Mj0I";
 
     const Articulos = [
         {
@@ -44,52 +44,59 @@ const Items = () => {
             badge: "Premium"
         },
     ];
+
+const processProductData = (data) => {
+    console.log("Datos CRUDOS recibidos:", data);
+    
+    let productosArray = [];
+    
+    if (data && Array.isArray(data.data)) {
+        productosArray = data.data;
+    }
+    
+    if (Array.isArray(productosArray) && productosArray.length > 0) {
+        const productosMapeados = productosArray.map((producto) => ({
+            name: producto.nombre,
+            img: producto.imagen,
+            price: `$${producto.precio}`,
+            badge: producto.tipo,
+        }));
+
+        console.log("Productos mapeados:", productosMapeados);
+        setProductos(productosMapeados);
+    } else {
+        console.log("❌ No se encontraron productos, usando datos predefinidos");
+        setProductos(Articulos);
+    }
+};
+
     const fetchProductos = async () => {
         try {
             setLoading(true);
-            console.log(`${API_BASE_URL}/productos/items`);
-            const response = await fetch(`${API_BASE_URL}/productos/items`, {
+            
+            const timestamp = new Date().getTime();
+            const url = `${API_BASE_URL}/productos/items?t=${timestamp}`;
+            const response = await fetch(url, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "ngrok-skip-browser-warning": "true",
                     "Authorization": `Bearer ${APP_TOKEN}`,
+                    "ngrok-skip-browser-warning": "true",
                 },
+                credentials: 'include',
+                cache: 'no-store'
             });
-            console.log(response)
-            console.log(data)
+            
             if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status}`);
+                throw new Error(`Error: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log(data);
-            if (data.success) {
-                const itemsFromAPI = data.items || data.data || [];
-
-                if (itemsFromAPI.length > 0) {
-                    const productosMapeados = itemsFromAPI.map((producto) => ({
-                        name: producto.nombre || "Producto sin nombre",
-                        img:
-                            typeof producto.imagen === "string" && producto.imagen.startsWith("http")
-                                ? producto.imagen
-                                : "https://i.pinimg.com/736x/66/8b/67/668b671564f171d22818dcaa866a904e.jpg",
-                        price: `$${producto.precio || "0"}`,
-                        originalPrice: null,
-                        badge: producto.tipo || null,
-                    }));
-
-                    setProductos(productosMapeados);
-                    console.log("Conexión exitosa con el API. Productos cargados desde el servidor.");
-                } else {
-                    console.log("API respondió sin productos. Cargando productos predefinidos.");
-                    setProductos(Articulos);
-                }
-            } else {
-                throw new Error(data.message || "Error en la respuesta del API");
-            }
+            processProductData(data);
+            
         } catch (error) {
-            console.error(" No se pudo conectar con el API. Se mostrarán productos predefinidos.");
+            console.error("Error al obtener productos:", error.message);
+            console.log("Usando productos predefinidos");
             setProductos(Articulos);
         } finally {
             setLoading(false);
@@ -102,14 +109,11 @@ const Items = () => {
 
     return (
         <div className="items-page-container">
-            {/* Filtros en el lado izquierdo */}
             <div className="filters-sidebar">
                 <Filters />
             </div>
 
-            {/* Contenido principal en el lado derecho */}
             <div className="items-main-content">
-                {/* Header de la sección */}
                 <div className="items-header">
                     <h1 className="items-title">Nuestra Colección</h1>
                     <p className="items-subtitle">
@@ -121,7 +125,6 @@ const Items = () => {
                     </p>
                 </div>
 
-                {/* Loading state */}
                 {loading && (
                     <div className="loading-container">
                         <div className="spinner-border text-primary" role="status">
@@ -131,7 +134,6 @@ const Items = () => {
                     </div>
                 )}
 
-                {/* Grid de productos */}
                 {!loading && (
                     <div className="container">
                         <div className="row">
