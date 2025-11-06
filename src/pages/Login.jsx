@@ -11,9 +11,9 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-  const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM2NjIyOCwiZXhwIjoxNzYyMzY5ODI4fQ.1OIkaDy5PoA-e9tRU6qdvoFg4_PHcmXzSKFc9C5M8hk";
-
+  const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+  const APP_TOKEN = import.meta.env.VITE_TOKEN;
+  
   useEffect(() => {
     console.log(`Email: ${email}`);
     console.log(`Password: ${password}`);

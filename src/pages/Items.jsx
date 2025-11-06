@@ -7,8 +7,8 @@ const Items = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const API_BASE_URL = "https://crenate-ariella-questioningly.ngrok-free.dev";
-    const APP_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkFjY2VzbyBnZW5lcmljbyIsImlhdCI6MTc2MjM5ODg2OSwiZXhwIjoxNzYyNDAyNDY5fQ.aL0NV706K7KnSuHoA2sCzTL1Mly92FrUAerJTH4Mj0I";
+    const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+    const APP_TOKEN = import.meta.env.VITE_TOKEN;
 
     const Articulos = [
         {
