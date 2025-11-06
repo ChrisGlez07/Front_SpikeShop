@@ -1,15 +1,29 @@
 .filters-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
   margin-bottom: 30px;
 }
 
+.filters-section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.filters-section h5{
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #DDB892;
+  display: inline-block;
+  padding-bottom: 4px;
+}
 .filter-group {
   margin-bottom: 25px;
 }
 
 .filter-group h6 {
   font-weight: 600;
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 12px;
+  color: #DDB892;
 }
 
 .form-check {
@@ -18,11 +32,17 @@
 
 .form-check-input {
   margin-right: 8px;
+  accent-color: #DDB892;
 }
 
 .form-check-label {
   font-size: 0.9rem;
-  color: #555;
+  color: #444;
+  cursor: pointer;
+}
+
+.form-check-label:hover{
+  color: #DDB892;
 }
 
 .size-options {
@@ -35,8 +55,30 @@
   min-width: 40px;
   padding: 6px 8px;
   font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border-color: #ccc;
+}
+.size-options .btn:hover,
+.size-options .btn.active{
+  background-color: #DDB892;
+  color: white;
+  border-color: #DDB892;
 }
 
+
 .filter-actions {
-  margin-top: 20px;
+  margin-top: 25px;
+}
+
+.filter-actions .btn {
+  font-weight: 500;
+  border-radius: 8px;
+  border-color: #DDB892;
+  color: #DDB892;
+}
+
+.filter-actions .btn:hover{
+  background-color: #DDB892;
+  color: white;
 }
