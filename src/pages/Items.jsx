@@ -65,7 +65,7 @@ const processProductData = (data) => {
         console.log("Productos mapeados:", productosMapeados);
         setProductos(productosMapeados);
     } else {
-        console.log("❌ No se encontraron productos, usando datos predefinidos");
+        console.log("No se encontraron productos, usando datos predefinidos");
         setProductos(Articulos);
     }
 };
@@ -145,7 +145,7 @@ const processProductData = (data) => {
                                 <div className="col-12">
                                     <div className="no-products">
                                         <h4>No hay productos disponibles</h4>
-                                        <p>Intenta recargar la página o contacta al administrador.</p>
+                                        <p>Intenta recargar la página o contacta al administrador please.</p>
                                     </div>
                                 </div>
                             )}
