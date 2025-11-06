@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Home from './pages/home.jsx'
-import About from './pages/About.jsx'
+import About from './pages/about.jsx'
 import Contact from './pages/Contact.jsx'
 import Search from './pages/search.jsx'
 import Login from './pages/login.jsx'
@@ -19,7 +19,13 @@ function App() {
           <div className="container">
             <div className="row align-items-center">
               <div className="col-md-4">
-                <h1 className="logo">SPIKESHOP</h1>
+                      <Link to="/items" className="image-link">
+                    <img 
+                      src="https://i.postimg.cc/LsYz2mRT/spie-Top.png" 
+                      alt="Shop Items" 
+                      className="header-image"
+                    />
+                  </Link>
               </div>
               <div className="col-md-8">
                 <nav className="main-nav">
@@ -30,27 +36,10 @@ function App() {
                   <Link to="/items" className="nav-link">Online Shop</Link>
                   <Search />
                 </nav>
-              </div>
+             </div>
             </div>
           </div>
-          <section className="servicesBarTop">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-4 service-item">
-                  <Link to="/Items" className="nav-link">Items</Link>
-                </div>
-                <div className="col-md-4 service-item">
-
-                </div>
-                <div className="col-md-4 service-item">
-
-                </div>
-              </div>
-            </div>
-          </section>
         </header>
-        <div className="row">
-        </div>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login/*' element={<Login />} />
@@ -62,5 +51,4 @@ function App() {
     </>
   )
 }
-
-export default App
+export default App;

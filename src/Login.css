@@ -33,10 +33,10 @@
 .userLogin input, .PasswordLogin input, .userRegister input, .emailRegister input, .passwordRegister input {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #e9c69d;
+  border: 1px solid #DDB892;
   border-radius: 8px;
   font-size: 16px;
-  background-color: #e9c69d;
+  background-color: #DDB892;
   color: #333;
 }
 

@@ -6,7 +6,7 @@ html, body, #root {
 }
 
 .row {
-  margin: 0 !important;
+  margin: 0;
 }
 
 .col-md-4, .col-md-8 {
@@ -14,63 +14,79 @@ html, body, #root {
 }
 
 .container {
-  max-width: 100% !important;
-  width: 100% !important;
-  padding: 0 15px !important;
-  margin: 0 !important;
+  max-width: 100%;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0;
 }
 
 /* ===== APP.JSX ===== */
 .containerHome {
   width: 100vw;
   min-height: 100vh;
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: #b99872;
+  padding: 0;
+  margin: 0;
+  background-color: #DDB892;
 }
 
 .header {
   width: 100%;
-  background-color: #ffedd8;
+  background-color: #DDB892;
   padding: 20px 0;
   border-bottom: 1px solid #eee;
-  height: 200px;
+  min-height: auto;
+  height: auto;
 }
 
 .header .container {
-  max-width: 100% !important;
-  padding: 0 15px !important;
+  max-width: 100%;
+  padding: 0 15px;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #E25353;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 .main-nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px;
+  padding: 10px;
+  gap: 40px;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
+  color: white;
+  font-weight: 400;
+  background-color: #E25353;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.servicesBarTop {
-  padding: 40px 0;
-  background: #ffedd8;
-  width: 100%;
-  background-image: url("https://i.postimg.cc/LsYz2mRT/spie-Top.png");
-  height: 140px;
-  background-repeat: no-repeat;
-  background-size: cover;
+.nav-link:hover {
+  background-color: #E25353;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(211, 53, 53, 0.15);
+  border: 2px solid #E25353;
 }
+
 
 @media (max-width: 768px) {
   .main-nav {
@@ -78,4 +94,18 @@ html, body, #root {
     flex-wrap: wrap;
     gap: 10px;
   }
+  
+  .nav-link {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    text-align: center;
+  }
+}
+
+a {
+  text-decoration: none;
 }

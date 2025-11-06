@@ -1,0 +1,143 @@
+.containerContact {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 60px 15px !important;
+    margin: 0 auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color:#DDB892; 
+}
+
+.contactCard {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contactCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.contactTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #781212;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.contactTitle2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #781212;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.contactSubtitle {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #3b2b2b;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+.socialContainer {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.socialLink {
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.socialLink:hover {
+    transform: scale(1.05);
+}
+
+.socialCard {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.socialCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.socialCard.instagram:hover {
+    background: linear-gradient(135deg, #f6ede2 0%, #fd5949 100%);
+}
+
+.socialCard.facebook:hover {
+    background: linear-gradient(135deg, #f6ede2 0%, #3b5998 100%);
+}
+
+.socialCard.whatsapp:hover {
+    background: linear-gradient(135deg, #f6ede2 0%, #25D366 100%);
+}
+
+.socialIcon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8f8f8;
+    transition: all 0.3s ease;
+}
+
+.socialCard:hover .socialIcon {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+}
+
+.socialIcon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.socialCard:hover .socialIcon img {
+    transform: scale(1.1);
+}
+
+.socialName {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #3b2b2b;
+    transition: color 0.3s ease;
+}
+
+.socialCard:hover .socialName {
+    color: white;
+    font-weight: 700;
+}
+
