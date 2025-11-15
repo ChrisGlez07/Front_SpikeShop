@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Card from "./card.jsx";
-import Filters from "./filtro.jsx";
 import "../Items.css";
+import '../Filters.css';
 
 const Items = () => {
     const [productos, setProductos] = useState([]);
+    const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [loading, setLoading] = useState(false);
+    
+    // Estados para los filtros
+    const [filtros, setFiltros] = useState({
+        categorias: [],
+        precio: '',
+        talla: ''
+    });
 
     const API_BASE_URL = import.meta.env.VITE_BASE_URL;
     const APP_TOKEN = import.meta.env.VITE_TOKEN;
@@ -16,64 +24,240 @@ const Items = () => {
             img: "https://i.pinimg.com/736x/66/8b/67/668b671564f171d22818dcaa866a904e.jpg",
             price: "$74.99",
             originalPrice: "$99.99",
-            badge: "Nuevo"
+            badge: "Nuevo",
+            tipo: "Nuevo",
+            precioNumerico: 74.99,
+            descripciones: [
+                {
+                    color: "red",
+                    talla: "M",
+                    cantidad: 10
+                },
+                {
+                    color: "blue",
+                    talla: "L",
+                    cantidad: 5
+                },
+                {
+                    color: "black",
+                    talla: "XL",
+                    cantidad: 8
+                }
+            ]
         },
         {
             name: "Zapatillas Urbanas",
             img: "https://i.pinimg.com/736x/0b/27/a9/0b27a95f0ea82759f11a32ebb058b691.jpg",
             price: "$65.99",
-            badge: null
+            badge: null,
+            tipo: "Popular",
+            precioNumerico: 65.99,
+            descripciones: [
+                {
+                    color: "black",
+                    talla: "S",
+                    cantidad: 15
+                },
+                {
+                    color: "blue",
+                    talla: "M",
+                    cantidad: 7
+                }
+            ]
         },
         {
             name: "Botines Deportivos",
             img: "https://i.pinimg.com/736x/e9/9a/0a/e99a0a3ff733a36a5764fa0f99fc8f9c.jpg",
             price: "$95.99",
             originalPrice: "$119.99",
-            badge: "Popular"
+            badge: "Popular",
+            tipo: "Popular",
+            precioNumerico: 95.99,
+            descripciones: [
+                {
+                    color: "black",
+                    talla: "L",
+                    cantidad: 12
+                },
+                {
+                    color: "red",
+                    talla: "M",
+                    cantidad: 6
+                },
+                {
+                    color: "blue",
+                    talla: "XL",
+                    cantidad: 3
+                }
+            ]
         },
         {
             name: "Sneakers Casual",
             img: "https://i.pinimg.com/736x/2a/6b/10/2a6b10e91896a1d96838ed3c000617e4.jpg",
             price: "$59.99",
-            badge: null
+            badge: null,
+            tipo: "Básico",
+            precioNumerico: 59.99,
+            descripciones: [
+                {
+                    color: "blue",
+                    talla: "S",
+                    cantidad: 20
+                },
+                {
+                    color: "red",
+                    talla: "M",
+                    cantidad: 10
+                }
+            ]
         },
         {
             name: "Zapatos Elegance Pro",
             img: "https://i.pinimg.com/736x/07/1d/39/071d398168fa7f1a308efa173933372a.jpg",
             price: "$109.99",
-            badge: "Premium"
+            badge: "Premium",
+            tipo: "Premium",
+            precioNumerico: 109.99,
+            descripciones: [
+                {
+                    color: "black",
+                    talla: "M",
+                    cantidad: 8
+                },
+                {
+                    color: "black",
+                    talla: "L",
+                    cantidad: 4
+                },
+                {
+                    color: "black",
+                    talla: "XL",
+                    cantidad: 2
+                }
+            ]
         },
     ];
 
-const processProductData = (data) => {
-    console.log("Datos CRUDOS recibidos:", data);
-    
-    let productosArray = [];
-    
-    if (data && Array.isArray(data.data)) {
-        productosArray = data.data;
-    }
-    
-    if (Array.isArray(productosArray) && productosArray.length > 0) {
-        const productosMapeados = productosArray.map((producto) => ({
-            name: producto.nombre,
-            img: producto.imagen,
-            price: `$${producto.precio}`,
-            badge: producto.tipo,
-        }));
 
-        console.log("Productos mapeados:", productosMapeados);
-        setProductos(productosMapeados);
-    } else {
-        console.log("No se encontraron productos, usando datos predefinidos");
-        setProductos(Articulos);
-    }
-};
+    // Manejar cambios en los filtros
+    const handleCategoriaChange = (categoria) => {
+        setFiltros(prev => {
+            const nuevasCategorias = prev.categorias.includes(categoria)
+                ? prev.categorias.filter(cat => cat !== categoria)
+                : [...prev.categorias, categoria];
+            
+            return { ...prev, categorias: nuevasCategorias };
+        });
+    };
+
+    const handlePrecioChange = (rangoPrecio) => {
+        setFiltros(prev => ({
+            ...prev,
+            precio: prev.precio === rangoPrecio ? '' : rangoPrecio
+        }));
+    };
+
+    const handleTallaChange = (talla) => {
+        setFiltros(prev => ({
+            ...prev,
+            talla: prev.talla === talla ? '' : talla
+        }));
+    };
+
+    const limpiarFiltros = () => {
+        setFiltros({
+            categorias: [],
+            precio: '',
+            talla: ''
+        });
+    };
+
+    // Aplicar filtros
+    useEffect(() => {
+        let resultados = [...productos];
+
+        // Filtrar por categoría (badge/tipo)
+        if (filtros.categorias.length > 0) {
+            resultados = resultados.filter(producto => 
+                filtros.categorias.includes(producto.badge) || 
+                filtros.categorias.includes(producto.tipo)
+            );
+        }
+
+        // Filtrar por precio
+        if (filtros.precio) {
+            switch (filtros.precio) {
+                case 'under50':
+                    resultados = resultados.filter(producto => 
+                        producto.precioNumerico < 50
+                    );
+                    break;
+                case 'price50-100':
+                    resultados = resultados.filter(producto => 
+                        producto.precioNumerico >= 50 && producto.precioNumerico <= 100
+                    );
+                    break;
+                case 'over100':
+                    resultados = resultados.filter(producto => 
+                        producto.precioNumerico > 100
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Filtrar por talla
+        if (filtros.talla) {
+            resultados = resultados.filter(producto =>
+                producto.talla === filtros.talla ||
+                (producto.descripciones && producto.descripciones.some(desc => 
+                    desc.talla === filtros.talla && desc.cantidad > 0
+                ))
+            );
+        }
+
+        setProductosFiltrados(resultados);
+    }, [productos, filtros]);
+
+    const processProductData = (data) => {
+        console.log("Datos CRUDOS recibidos:", data);
+
+        let productosArray = [];
+
+        if (data && Array.isArray(data.data)) {
+            productosArray = data.data;
+        }
+
+        if (Array.isArray(productosArray) && productosArray.length > 0) {
+            const productosMapeados = productosArray.map((producto) => ({
+                name: producto.nombre,
+                img: producto.imagen,
+                price: `$${producto.precio}`,
+                precioNumerico: producto.precio,
+                badge: producto.tipo,
+                tipo: producto.tipo,
+                descripciones: producto.descripcion ? producto.descripcion.map(desc => ({
+                    color: desc.color,
+                    talla: desc.talla,
+                    cantidad: desc.cantidad
+                })) : []
+                // Removemos color y talla individuales ya que ahora usamos descripciones
+            }));
+            console.log("Productos mapeados:", productosMapeados);
+            setProductos(productosMapeados);
+            setProductosFiltrados(productosMapeados);
+        } else {
+            console.log("No se encontraron productos, usando datos predefinidos");
+            setProductos(Articulos);
+            setProductosFiltrados(Articulos);
+        }
+    };
 
     const fetchProductos = async () => {
         try {
             setLoading(true);
-            
+
             const timestamp = new Date().getTime();
             const url = `${API_BASE_URL}/productos/items?t=${timestamp}`;
             const response = await fetch(url, {
@@ -86,18 +270,19 @@ const processProductData = (data) => {
                 credentials: 'include',
                 cache: 'no-store'
             });
-            
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
 
             const data = await response.json();
             processProductData(data);
-            
+
         } catch (error) {
             console.error("Error al obtener productos:", error.message);
             console.log("Usando productos predefinidos");
             setProductos(Articulos);
+            setProductosFiltrados(Articulos);
         } finally {
             setLoading(false);
         }
@@ -107,7 +292,130 @@ const processProductData = (data) => {
         fetchProductos();
     }, []);
 
-    return (
+    // Componente de Filtros integrado
+    const Filters = () => {
+        return (
+            <div className="filters-section"> 
+                {/* Filtro por Categoría */}
+                <div className="filter-group">
+                    <h6>Category</h6>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            id="nuevo"
+                            checked={filtros.categorias.includes('Nuevo')}
+                            onChange={() => handleCategoriaChange('Nuevo')}
+                        />
+                        <label className="form-check-label" htmlFor="nuevo">
+                            New
+                        </label>
+                    </div>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            id="popular"
+                            checked={filtros.categorias.includes('Popular')}
+                            onChange={() => handleCategoriaChange('Popular')}
+                        />
+                        <label className="form-check-label" htmlFor="popular">
+                            Popular
+                        </label>
+                    </div>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            id="premium"
+                            checked={filtros.categorias.includes('Premium')}
+                            onChange={() => handleCategoriaChange('Premium')}
+                        />
+                        <label className="form-check-label" htmlFor="premium">
+                            Premium
+                        </label>
+                    </div>
+                </div>
+                
+                {/* Filtro por Rango de Precio */}
+                <div className="filter-group">
+                    <h6>Price range</h6>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="radio" 
+                            name="priceRange" 
+                            id="under50" 
+                            checked={filtros.precio === 'under50'}
+                            onChange={() => handlePrecioChange('under50')}
+                        />
+                        <label className="form-check-label" htmlFor="under50">
+                            Less than $50
+                        </label>
+                    </div>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="radio" 
+                            name="priceRange" 
+                            id="price50-100"
+                            checked={filtros.precio === 'price50-100'}
+                            onChange={() => handlePrecioChange('price50-100')}
+                        />
+                        <label className="form-check-label" htmlFor="price50-100">
+                            $50 - $100
+                        </label>
+                    </div>
+                    <div className="form-check">
+                        <input 
+                            className="form-check-input" 
+                            type="radio" 
+                            name="priceRange" 
+                            id="over100"
+                            checked={filtros.precio === 'over100'}
+                            onChange={() => handlePrecioChange('over100')}
+                        />
+                        <label className="form-check-label" htmlFor="over100">
+                           More than $100
+                        </label>
+                    </div>
+                </div>
+                
+                {/* Filtro por Talla */}
+                <div className="filter-group">
+                    <h6>Size</h6>
+                    <div className="size-options">
+                        {['S', 'M', 'L', 'XL'].map(talla => (
+                            <button 
+                                key={talla}
+                                className={`btn btn-sm ${filtros.talla === talla ? 'btn-primary' : 'btn-outline-secondary'}`}
+                                onClick={() => handleTallaChange(talla)}
+                            >
+                                {talla}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Botón para limpiar filtros */}
+                <div className="filter-actions">
+                    <button 
+                        className="btn btn-outline-primary btn-sm w-100"
+                        onClick={limpiarFiltros}
+                    >
+                        Clean filters
+                    </button>
+                </div>
+
+                {/* Mostrar cantidad de resultados */}
+                <div className="filter-results">
+                    <small>{productosFiltrados.length} of {productos.length} products</small>
+                </div>
+            </div>
+        );
+    };
+
+     return (
         <div className="items-page-container">
             <div className="filters-sidebar">
                 <Filters />
@@ -115,37 +423,37 @@ const processProductData = (data) => {
 
             <div className="items-main-content">
                 <div className="items-header">
-                    <h1 className="items-title">Nuestra Colección</h1>
+                    <h1 className="items-title">Our collection</h1>
                     <p className="items-subtitle">
                         {loading
-                            ? "Cargando productos..."
-                            : productos.length > 0
-                                ? `Descubre ${productos.length} productos con calidad premium`
-                                : "No hay productos disponibles"}
+                            ? "Loading products..."
+                            : productosFiltrados.length > 0
+                                ? `Find our ${productosFiltrados.length} premium quality products`
+                                : "There aren't products with those specifications"}
                     </p>
                 </div>
 
                 {loading && (
                     <div className="loading-container">
                         <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Cargando productos...</span>
+                            <span className="visually-hidden">Loading products...</span>
                         </div>
-                        <p>Conectando con el servidor...</p>
+                        <p>Connecting to server...</p>
                     </div>
                 )}
 
                 {!loading && (
                     <div className="container">
                         <div className="row">
-                            {productos.length > 0 ? (
-                                productos.map((producto, index) => (
+                            {productosFiltrados.length > 0 ? (
+                                productosFiltrados.map((producto, index) => (
                                     <Card key={index} producto={producto} />
                                 ))
                             ) : (
                                 <div className="col-12">
                                     <div className="no-products">
-                                        <h4>No hay productos disponibles</h4>
-                                        <p>Intenta recargar la página o contacta al administrador please.</p>
+                                        <h4>No products match the filters</h4>
+                                        <p>Try adjusting the filters or clear them to see all products.</p>
                                     </div>
                                 </div>
                             )}

@@ -4,8 +4,8 @@ import Register from './Register.jsx';
 import '../Login.css';
 
 const Login = () => {  
-  const [email, setEmail] = useState("alex@example.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const location = useLocation();
@@ -21,7 +21,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError("Por favor ingresa email y contraseña");
+      setError("Please complete the information");
       return;
     }
 

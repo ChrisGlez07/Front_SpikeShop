@@ -56,6 +56,9 @@ const Register = () => {
         }, 2000);
       } else {
         setError(data.message || "Error en el registro");
+        console.log("This user is already registered", data);
+        setSuccess("");
+        alert("This user is already registered");
       }
     } catch (error) {
       console.error("Error en registro:", error);

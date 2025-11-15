@@ -95,3 +95,64 @@
     font-size: 1rem;
   }
 }
+.selectores-principal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+.tallas-section {
+    flex: 1;
+}
+
+.colores-dropdown-section {
+    flex: 0 0 auto;
+}
+
+.tallas-container {
+    display: flex;
+    gap: 4px;
+    margin-top: 3px;
+}
+
+.talla-btn {
+    padding: 3px 6px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+    min-width: 25px;
+    height: 24px;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.talla-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.talla-btn.selected {
+    background-color: #e9ecef; 
+    border-color: #4d4d4d; 
+    color: #000000; 
+    font-weight: 500;
+}
+
+.color-dropdown {
+    width: 100px;
+    padding: 3px 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 11px;
+    margin-top: 3px;
+    height: 24px;
+}
+
+.tallas-section h6,
+.colores-dropdown-section h6 {
+    margin-bottom: 3px;
+    font-size: 11px;
+}
