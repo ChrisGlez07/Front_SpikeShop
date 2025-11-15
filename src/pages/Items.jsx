@@ -187,19 +187,19 @@ const Items = () => {
         // Filtrar por precio
         if (filtros.precio) {
             switch (filtros.precio) {
-                case 'under50':
+                case 'under400':
                     resultados = resultados.filter(producto => 
-                        producto.precioNumerico < 50
+                        producto.precioNumerico < 400
                     );
                     break;
-                case 'price50-100':
+                case 'price400-700':
                     resultados = resultados.filter(producto => 
-                        producto.precioNumerico >= 50 && producto.precioNumerico <= 100
+                        producto.precioNumerico >= 400 && producto.precioNumerico <= 700
                     );
                     break;
-                case 'over100':
+                case 'over700':
                     resultados = resultados.filter(producto => 
-                        producto.precioNumerico > 100
+                        producto.precioNumerico > 700
                     );
                     break;
                 default:
@@ -303,36 +303,36 @@ const Items = () => {
                         <input 
                             className="form-check-input" 
                             type="checkbox" 
-                            id="nuevo"
-                            checked={filtros.categorias.includes('Nuevo')}
-                            onChange={() => handleCategoriaChange('Nuevo')}
+                            id="Men"
+                            checked={filtros.categorias.includes('Men')}
+                            onChange={() => handleCategoriaChange('Men')}
                         />
-                        <label className="form-check-label" htmlFor="nuevo">
-                            New
+                        <label className="form-check-label" htmlFor="Men">
+                            Men
                         </label>
                     </div>
                     <div className="form-check">
                         <input 
                             className="form-check-input" 
                             type="checkbox" 
-                            id="popular"
-                            checked={filtros.categorias.includes('Popular')}
-                            onChange={() => handleCategoriaChange('Popular')}
+                            id="Women"
+                            checked={filtros.categorias.includes('Women')}
+                            onChange={() => handleCategoriaChange('Women')}
                         />
-                        <label className="form-check-label" htmlFor="popular">
-                            Popular
+                        <label className="form-check-label" htmlFor="Women">
+                            Women
                         </label>
                     </div>
                     <div className="form-check">
                         <input 
                             className="form-check-input" 
                             type="checkbox" 
-                            id="premium"
-                            checked={filtros.categorias.includes('Premium')}
-                            onChange={() => handleCategoriaChange('Premium')}
+                            id="Kids"
+                            checked={filtros.categorias.includes('Kids')}
+                            onChange={() => handleCategoriaChange('Kids')}
                         />
-                        <label className="form-check-label" htmlFor="premium">
-                            Premium
+                        <label className="form-check-label" htmlFor="Kids">
+                            Kids
                         </label>
                     </div>
                 </div>
@@ -345,12 +345,12 @@ const Items = () => {
                             className="form-check-input" 
                             type="radio" 
                             name="priceRange" 
-                            id="under50" 
-                            checked={filtros.precio === 'under50'}
-                            onChange={() => handlePrecioChange('under50')}
+                            id="under400" 
+                            checked={filtros.precio === 'under400'}
+                            onChange={() => handlePrecioChange('under400')}
                         />
-                        <label className="form-check-label" htmlFor="under50">
-                            Less than $50
+                        <label className="form-check-label" htmlFor="under400">
+                            Less than $400
                         </label>
                     </div>
                     <div className="form-check">
@@ -358,12 +358,12 @@ const Items = () => {
                             className="form-check-input" 
                             type="radio" 
                             name="priceRange" 
-                            id="price50-100"
-                            checked={filtros.precio === 'price50-100'}
-                            onChange={() => handlePrecioChange('price50-100')}
+                            id="price400-700"
+                            checked={filtros.precio === 'price400-700'}
+                            onChange={() => handlePrecioChange('price400-700')}
                         />
-                        <label className="form-check-label" htmlFor="price50-100">
-                            $50 - $100
+                        <label className="form-check-label" htmlFor="price400-700">
+                            $400 - $700
                         </label>
                     </div>
                     <div className="form-check">
@@ -371,12 +371,12 @@ const Items = () => {
                             className="form-check-input" 
                             type="radio" 
                             name="priceRange" 
-                            id="over100"
-                            checked={filtros.precio === 'over100'}
-                            onChange={() => handlePrecioChange('over100')}
+                            id="over700"
+                            checked={filtros.precio === 'over700'}
+                            onChange={() => handlePrecioChange('over700')}
                         />
-                        <label className="form-check-label" htmlFor="over100">
-                           More than $100
+                        <label className="form-check-label" htmlFor="over700">
+                           More than $700
                         </label>
                     </div>
                 </div>
