@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="footer-section">
           <h4 className="footer-subtitle">Contact us</h4>
           <div className="phone-container">
-            <span className="phone-number">+52 12 3456 7891</span>
+            <span className="phone-number">+52 123-456-7890</span>
 
           </div>
         </div>
