@@ -8,7 +8,7 @@ export default function Contact() {
         <div className="contactCard">
           <h1 className="contactTitle">Contact Us</h1>
           <h2 className="contactTitle2">Telephone Number: +52 123-456-7890</h2>
-          <p className="contactSubtitle">Follow Us in our media accounts</p>
+          <p className="contactSubtitle">Follow us in our media accounts</p>
           
           <div className="socialContainer">
             <div className="socialCard instagram">
