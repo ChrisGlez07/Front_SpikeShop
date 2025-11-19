@@ -2,8 +2,7 @@ import '../about.css';
 
 export default function about() {
   return (
-    <>
-
+<>
       <div className='rowAbout'>
         <div className='colAbout'>
           <div className='textoContainer'>
@@ -32,7 +31,6 @@ export default function about() {
           </div>
         </div>
       </div>
-
     </>
   );
 }
