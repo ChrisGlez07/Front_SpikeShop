@@ -1,4 +1,5 @@
 import '../about.css';
+import Footer from './Footer';
 
 export default function about() {
   return (
@@ -32,7 +33,7 @@ export default function about() {
           </div>
         </div>
       </div>
-
+    <Footer />
     </>
   );
 }

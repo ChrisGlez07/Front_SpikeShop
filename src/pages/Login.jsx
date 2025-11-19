@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Register from './Register.jsx';
 import '../Login.css';
+import Footer from './Footer.jsx';
 
 const Login = () => {  
   const [email, setEmail] = useState("");
@@ -64,44 +65,47 @@ const Login = () => {
   const showLoginForm = location.pathname === '/login' || location.pathname === '/login/';
 
   return (
-    <div className="containerLoginRegister">
-      {showLoginForm && (
-        <div className="form-container">
-          <div className="userLogin">
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-            />
+    <>
+      <div className="containerLoginRegister">
+        {showLoginForm && (
+          <div className="form-container">
+            <div className="userLogin">
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+              />
+            </div>
+            <div className="PasswordLogin">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <button
+              className="btnLogin"
+              onClick={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? "Cargando..." : "Login"}
+            </button>
+
+            <Link to="/login/register" className="nav-link">Register</Link>
           </div>
-          <div className="PasswordLogin">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-            />
-          </div>
+        )}
 
-          {error && <div className="error-message">{error}</div>}
-
-          <button
-            className="btnLogin"
-            onClick={handleLogin}
-            disabled={isLoading}
-          >
-            {isLoading ? "Cargando..." : "Login"}
-          </button>
-
-          <Link to="/login/register" className="nav-link">Register</Link>
-        </div>
-      )}
-
-      <Routes>
-        <Route path="register" element={<Register />} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="register" element={<Register />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
   );
 };
 

@@ -8,7 +8,6 @@ const Items = () => {
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [loading, setLoading] = useState(false);
     
-    // Estados para los filtros
     const [filtros, setFiltros] = useState({
         categorias: [],
         precio: '',
@@ -242,7 +241,6 @@ const Items = () => {
                     talla: desc.talla,
                     cantidad: desc.cantidad
                 })) : []
-                // Removemos color y talla individuales ya que ahora usamos descripciones
             }));
             console.log("Productos mapeados:", productosMapeados);
             setProductos(productosMapeados);
@@ -292,11 +290,9 @@ const Items = () => {
         fetchProductos();
     }, []);
 
-    // Componente de Filtros integrado
     const Filters = () => {
         return (
             <div className="filters-section"> 
-                {/* Filtro por Categoría */}
                 <div className="filter-group">
                     <h6>Category</h6>
                     <div className="form-check">
@@ -337,7 +333,6 @@ const Items = () => {
                     </div>
                 </div>
                 
-                {/* Filtro por Rango de Precio */}
                 <div className="filter-group">
                     <h6>Price range</h6>
                     <div className="form-check">
@@ -381,7 +376,6 @@ const Items = () => {
                     </div>
                 </div>
                 
-                {/* Filtro por Talla */}
                 <div className="filter-group">
                     <h6>Size</h6>
                     <div className="size-options">
@@ -397,7 +391,6 @@ const Items = () => {
                     </div>
                 </div>
 
-                {/* Botón para limpiar filtros */}
                 <div className="filter-actions">
                     <button 
                         className="btn btn-outline-primary btn-sm w-100"
@@ -407,7 +400,7 @@ const Items = () => {
                     </button>
                 </div>
 
-                {/* Mostrar cantidad de resultados */}
+
                 <div className="filter-results">
                     <small>{productosFiltrados.length} of {productos.length} products</small>
                 </div>

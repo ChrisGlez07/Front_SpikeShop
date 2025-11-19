@@ -4,7 +4,7 @@ import Home from './pages/home.jsx'
 import About from './pages/about.jsx'
 import Contact from './pages/Contact.jsx'
 import Search from './pages/search.jsx'
-import Login from './pages/login.jsx'
+import Login from './pages/Login.jsx'
 import Items from './pages/Items.jsx'
 import { Routes, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';

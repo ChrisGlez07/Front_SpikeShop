@@ -1,15 +1,16 @@
-
+import Footer from './Footer';
 import '../contact.css';
 
 export default function Contact() {
   return (
-    <div className="containerContact">
-      <div className="contactCard">
-        <h1 className="contactTitle">Contáctanos</h1>
-        <h2 className="contactTitle2">Teléfono: 123-456-7890</h2>
-        <p className="contactSubtitle">Síguenos en nuestras redes sociales</p>
-        
-        <div className="socialContainer">
+    <>
+      <div className="containerContact">
+        <div className="contactCard">
+          <h1 className="contactTitle">Contact Us</h1>
+          <h2 className="contactTitle2">Telephone Number: +52 123-456-7890</h2>
+          <p className="contactSubtitle">Follow Us in our media accounts</p>
+          
+          <div className="socialContainer">
             <div className="socialCard instagram">
               <div className="socialIcon">
                 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" />
@@ -30,8 +31,10 @@ export default function Contact() {
               </div>
               <span className="socialName">WhatsApp</span>
             </div>
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
