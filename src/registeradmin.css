@@ -1,4 +1,4 @@
- .containerLoginRegister {
+.adminRegister {
   background: url("https://i.pinimg.com/736x/5c/6d/f7/5c6df7bef8dcdea752cec20cbaa566b1.jpg") no-repeat center center;
   background-size: contain;
   background-color: #f0f0f0;
@@ -13,31 +13,23 @@
   overflow: hidden;
   margin: 10vh auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-  padding-top: 150px;
-} 
-
-.form-container {
+  padding-top: 200px;
+}
+.container {
   width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  margin-top: 280px;
 }
 
-.userLogin, .PasswordLogin, .userRegister, .emailRegister, .passwordRegister {
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.userLogin input, .PasswordLogin input, .userRegister input, .emailRegister input, .passwordRegister input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #DDB892;
-  border-radius: 8px;
-  font-size: 16px;
-  background-color: #DDB892;
-  color: #333;
+.container-items {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 260px;
 }
 
 .btnLogin, .btnRegister {
@@ -67,6 +59,46 @@
   display: block;
   text-align: center;
   margin-top: 10px;
-  color: #007bff;
+  color: #e09a9d;
   text-decoration: none;
+}
+.userTypeRegister {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.user-type-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #DDB892;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(239, 132, 132, 0.1);
+  transition: all 0.3s ease;
+}
+
+.user-type-select:focus {
+  outline: none;
+  border-color:#e09a9d;
+  box-shadow: 0 0 5px rgba(#DDB892);
+}
+
+.user-type-select option {
+  padding: 10px;
+  background-color: #ccc;
+  color: #333;
+}
+
+.userTypeRegister {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.user-type-select {
+  width: 150%;
+  max-width: 300px;
 }

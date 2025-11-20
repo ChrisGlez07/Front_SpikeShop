@@ -2,7 +2,8 @@ import { useState } from 'react'
 import './App.css'
 import Home from './pages/home.jsx'
 import About from './pages/about.jsx'
-import Contact from './pages/Contact.jsx'
+import Contact from './pages/contact.jsx'
+import Registeradmin from './pages/registeradmin.jsx'
 import Search from './pages/search.jsx'
 import Login from './pages/Login.jsx'
 import Items from './pages/Items.jsx'
@@ -34,6 +35,7 @@ function App() {
                   <Link to="/contact" className="nav-link">Contact us</Link>
                   <Link to="/login" className="nav-link">Login</Link>
                   <Link to="/items" className="nav-link">Online Shop</Link>
+                  <Link to="/registeradmin" className="nav-link">Register Admin</Link>
                   <Search />
                 </nav>
              </div>
@@ -46,6 +48,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/items' element={<Items />} />
+          <Route path='/registeradmin' element={<Registeradmin />} />
         </Routes>
       </div>
     </>
