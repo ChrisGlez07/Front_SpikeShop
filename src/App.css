@@ -39,7 +39,6 @@ html, body, #root {
 
 .header .container {
   max-width: 100%;
-  padding: 0 15px;
 }
 
 .logo {
@@ -50,36 +49,28 @@ html, body, #root {
   font-family: 'Poppins', sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 2px;
-  transition: all 0.3s ease;
 }
 
-.logo:hover {
-  transform: scale(1.05);
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-}
 
 .image-link {
-  display: inline-block;
+  display: flex;
 }
 
 .header-image {
   height: 50px;
-  width: auto;
-  transition: transform 0.3s ease;
+  width:auto;
+  align-items: center;
 }
 
-.header-image:hover {
-  transform: scale(1.05);
-}
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding-right: 80px;
 }
 
 .user-greeting {
-  color: #000;
   font-weight: 500;
   font-size: 0.9rem;
   background-color: #E25353;
@@ -87,25 +78,28 @@ html, body, #root {
   border-radius: 25px;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .btn-logout {
-  border: 1px solid #E25353 !important;
-  background: transparent !important;
-  color: #E25353 !important;
-  font-size: 0.8rem !important;
-  padding: 6px 12px !important;
-  border-radius: 25px !important;
-  font-weight: 500 !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #E25353;
+  background: transparent;
+  color: #E25353;
+  font-size: 0.8rem;
+  padding: 8px 15px;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-logout:hover {
-  background-color: #E25353 !important;
-  color: white !important;
+  background-color: #E25353;
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(211, 53, 53, 0.15) !important;
+  box-shadow: 0 6px 12px rgba(211, 53, 53, 0.15);
 }
 
 .main-nav {
@@ -139,3 +133,78 @@ html, body, #root {
   border: 2px solid #E25353;
 }
 
+/* Para responsive */
+@media (max-width: 768px) {
+  .header .row {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .main-nav {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .nav-link {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .user-info {
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  
+  .image-link {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .header-image {
+    height: 60px;
+  }
+  
+  .user-greeting {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+  
+  .btn-logout {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .main-nav {
+    gap: 8px;
+  }
+  
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .user-greeting {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.d-flex.align-items-center {
+  flex-wrap: wrap;
+}

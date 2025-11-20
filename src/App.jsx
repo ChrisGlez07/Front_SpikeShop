@@ -48,7 +48,7 @@ function App() {
               <div className="col-md-6">
                 <div className="d-flex align-items-center">
                   {/* Logo */}
-                  <Link to="/items" className="image-link me-4">
+                  <Link to="/items" className="image-link me-2">
                     <img 
                       src="https://i.postimg.cc/LsYz2mRT/spie-Top.png" 
                       alt="Shop Items" 
@@ -58,13 +58,13 @@ function App() {
                   
                   {/* Saludo y Logout al lado del logo */}
                   {user && (
-                    <div className="user-info d-flex align-items-center">
-                      <span className="user-greeting me-2" style={{ color: '#333', fontWeight: '500' }}>
+                    <div className="user-info d-flex align-items-left">
+                      <span className="user-greeting me-2">
                         Hola, {user.username}
                       </span>
                       <button 
                         onClick={handleLogout}
-                        className="btn-logout btn btn-outline-secondary btn-sm"
+                        className="btn-logout"
                       >
                         Logout
                       </button>
@@ -91,6 +91,7 @@ function App() {
                     <Link to="/admin" className="nav-link">Admin</Link>
                   )}
                   
+                  
                   <Search />
                 </nav>
               </div>
@@ -108,6 +109,7 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/items' element={<Items />} />
           <Route path='/admin/*' element={<Admin />} />
+          <Route path='/registeradmin' element={<Registeradmin />} />
         </Routes>
       </div>
     </>

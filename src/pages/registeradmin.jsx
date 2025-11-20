@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import '../registeradmin.css';
+import Footer from './Footer.jsx';
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -59,9 +60,7 @@ const Register = () => {
         }, 2000);
       } else {
         setError(data.message || "Error en el registro");
-        console.log("This user is already registered", data);
         setSuccess("");
-        alert("This user is already registered");
       }
     } catch (error) {
       console.error("Error en registro:", error);
@@ -72,6 +71,7 @@ const Register = () => {
   };
 
 return (
+  <>
     <div className="adminRegister">
       <div className="container-items">
         <div className="userRegister">
@@ -105,7 +105,7 @@ return (
         {success && <div className="success-message">{success}</div>}
  <div className="userTypeRegister">
           <select
-            value={userType}
+            value={role}
             onChange={(e) => setUserType(e.target.value)}
             className="user-type-select"
           >
@@ -122,9 +122,11 @@ return (
           {isLoading ? "Registrando..." : "Register"}
         </button>
 
-        <Link to="/login" className="nav-link">Back to Login</Link>
+        <Link to="/admin" className="nav-link">Back to Admin Home</Link>
       </div>
     </div>
+    <Footer />
+  </>
 );
 };
 

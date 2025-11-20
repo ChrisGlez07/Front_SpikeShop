@@ -13,15 +13,15 @@ function Admin() {
           </div>
     
           <div className="admin-buttons-container">
-            <Link to="/" className="admin-button spike-selling-button">
+            <Link to="/registeradmin" className="admin-button spike-selling-button">
               <div className="button-image-container">
                 <img 
                   src="https://i.pinimg.com/736x/6a/c7/15/6ac715accb77be2c1c4f3bcd8c973a0d.jpg" 
-                  alt="Spike Selling" 
+                  alt="User management" 
                   className="button-image"
                 />
               </div>
-              <span className="button-text">Spike Selling</span>
+              <span className="button-text">User Management</span>
             </Link>
           
             <Link to="/" className="admin-button spike-stock-button">

@@ -2,9 +2,10 @@
   background: url("https://i.pinimg.com/736x/5c/6d/f7/5c6df7bef8dcdea752cec20cbaa566b1.jpg") no-repeat center center;
   background-size: contain;
   background-color: #f0f0f0;
+  background-position: 20% 10%;
   color: rgb(0, 0, 0);
   width: 30%;
-  height: 800px;
+  height: 900px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -13,7 +14,7 @@
   overflow: hidden;
   margin: 10vh auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-  padding-top: 200px;
+  padding-top: 150px;
 }
 .container {
   width: 80%;
