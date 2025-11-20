@@ -9,7 +9,7 @@ html, body, #root {
   margin: 0;
 }
 
-.col-md-4, .col-md-8 {
+.col-md-4, .col-md-6, .col-md-8 {
   padding: 0 15px;
 }
 
@@ -20,7 +20,6 @@ html, body, #root {
   margin: 0;
 }
 
-/* ===== APP.JSX ===== */
 .containerHome {
   width: 100vw;
   min-height: 100vh;
@@ -59,16 +58,66 @@ html, body, #root {
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
+.image-link {
+  display: inline-block;
+}
+
+.header-image {
+  height: 50px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.header-image:hover {
+  transform: scale(1.05);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-greeting {
+  color: #000;
+  font-weight: 500;
+  font-size: 0.9rem;
+  background-color: #E25353;
+  padding: 8px 15px;
+  border-radius: 25px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-logout {
+  border: 1px solid #E25353 !important;
+  background: transparent !important;
+  color: #E25353 !important;
+  font-size: 0.8rem !important;
+  padding: 6px 12px !important;
+  border-radius: 25px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-logout:hover {
+  background-color: #E25353 !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(211, 53, 53, 0.15) !important;
+}
+
 .main-nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding: 10px;
-  gap: 40px;
+  gap: 20px;
 }
 
 .nav-link {
-  color: #000 !important; /* texto negro */
+  color: #000 !important;
   text-decoration: none;
   color: white;
   font-weight: 400;
@@ -78,6 +127,8 @@ html, body, #root {
   font-size: 0.9rem;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -88,25 +139,3 @@ html, body, #root {
   border: 2px solid #E25353;
 }
 
-
-@media (max-width: 768px) {
-  .main-nav {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .nav-link {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
-  
-  .logo {
-    font-size: 2rem;
-    text-align: center;
-  }
-}
-
-a {
-  text-decoration: none;
-}

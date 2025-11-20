@@ -4,17 +4,34 @@ import Register from './Register.jsx';
 import '../Login.css';
 import Footer from './Footer.jsx';
 
-const Login = () => {  
+const Login = ({ onUserLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   const API_BASE_URL = import.meta.env.VITE_BASE_URL;
   const APP_TOKEN = import.meta.env.VITE_TOKEN;
   
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user_session');
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
+        if (onUserLogin) {
+          onUserLogin(userData);
+        }
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('user_session');
+      }
+    }
+  }, [onUserLogin]);
+
   useEffect(() => {
     console.log(`Email: ${email}`);
     console.log(`Password: ${password}`);
@@ -35,7 +52,6 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${APP_TOKEN}`,
-      
         },
         body: JSON.stringify({
           email: email,
@@ -45,12 +61,36 @@ const Login = () => {
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
-        console.log("Login exitoso:", data);
+      console.log("Respuesta completa del servidor:", data); 
+
+      if (response.ok && data.message === "Login successful") {
+        console.log("Login exitoso - Datos del usuario:", data.data.user);
         alert("Login successfully");
         
-        localStorage.setItem('user_session', JSON.stringify(data.user));
-        navigate('/dashboard');
+        if (data.data && data.data.user) {
+          const userData = {
+            id: data.data.user.id,
+            username: data.data.user.username,
+            email: data.data.user.email,
+            role: data.data.user.role
+          };
+          
+          console.log("Datos que se guardarán en localStorage:", userData);
+
+          setUser(userData);
+          localStorage.setItem('user_session', JSON.stringify(userData));
+          if (onUserLogin) {
+            onUserLogin(userData);
+          }
+          
+          console.log("Verificación - ¿Qué hay en localStorage?");
+          const stored = localStorage.getItem('user_session');
+          console.log("Usuario en localStorage:", JSON.parse(stored));
+          
+          navigate('/dashboard');
+        } else {
+          setError("No se recibieron datos del usuario");
+        }
       } else {
         setError(data.message || "Error en el login");
       }

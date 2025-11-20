@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import Card from "./card.jsx";
 import "../Items.css";
 import '../Filters.css';
+import '../CartDropdown.css';
+import CartDropdown from "./CartDropdown.jsx";
 
 const Items = () => {
     const [productos, setProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [isCartOpen, setIsCartOpen] = useState(false);
     
     const [filtros, setFiltros] = useState({
         categorias: [],
@@ -19,6 +23,7 @@ const Items = () => {
 
     const Articulos = [
         {
+            id: 1,
             name: "Tenis Running Ultra",
             img: "https://i.pinimg.com/736x/66/8b/67/668b671564f171d22818dcaa866a904e.jpg",
             price: "$74.99",
@@ -45,6 +50,7 @@ const Items = () => {
             ]
         },
         {
+            id: 2,
             name: "Zapatillas Urbanas",
             img: "https://i.pinimg.com/736x/0b/27/a9/0b27a95f0ea82759f11a32ebb058b691.jpg",
             price: "$65.99",
@@ -65,6 +71,7 @@ const Items = () => {
             ]
         },
         {
+            id: 3,
             name: "Botines Deportivos",
             img: "https://i.pinimg.com/736x/e9/9a/0a/e99a0a3ff733a36a5764fa0f99fc8f9c.jpg",
             price: "$95.99",
@@ -90,7 +97,8 @@ const Items = () => {
                 }
             ]
         },
-        {
+        {   
+            id: 4,
             name: "Sneakers Casual",
             img: "https://i.pinimg.com/736x/2a/6b/10/2a6b10e91896a1d96838ed3c000617e4.jpg",
             price: "$59.99",
@@ -111,6 +119,7 @@ const Items = () => {
             ]
         },
         {
+            id: 5,
             name: "Zapatos Elegance Pro",
             img: "https://i.pinimg.com/736x/07/1d/39/071d398168fa7f1a308efa173933372a.jpg",
             price: "$109.99",
@@ -137,7 +146,50 @@ const Items = () => {
         },
     ];
 
+  // En tu Items.jsx, modifica la función addToCart así:
+    const addToCart = (productoCarrito) => {
+        console.log("Intentando agregar al carrito:", productoCarrito);
+        setCartItems(prevItems => {
+            const existingItemIndex = prevItems.findIndex(item =>
+                item.id === productoCarrito.id
+            );
 
+            if (existingItemIndex !== -1) {
+                // Si el producto ya está en el carrito, aumentar cantidad
+                return prevItems.map((item, index) =>
+                    index === existingItemIndex
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
+            } else {
+                // Si es un producto nuevo, agregarlo al carrito
+                console.log("Agregando al carrito:", productoCarrito);
+                return [...prevItems, productoCarrito];
+
+            }
+        });
+    };
+    const updateCartQuantity = (index, newQuantity) => {
+        if (newQuantity < 1) return;
+
+        setCartItems(prevItems =>
+            prevItems.map((item, i) =>
+                i === index ? { ...item, quantity: newQuantity } : item
+            )
+        );
+    };
+
+    const removeFromCart = (index) => {
+        setCartItems(prevItems => prevItems.filter((_, i) => i !== index));
+    };
+
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
+    const toggleCart = () => {
+        setIsCartOpen(!isCartOpen);
+    };
     // Manejar cambios en los filtros
     const handleCategoriaChange = (categoria) => {
         setFiltros(prev => {
@@ -440,7 +492,8 @@ const Items = () => {
                         <div className="row">
                             {productosFiltrados.length > 0 ? (
                                 productosFiltrados.map((producto, index) => (
-                                    <Card key={index} producto={producto} />
+                                    <Card key={index} producto={producto} 
+                                    onAddToCart={addToCart} />
                                 ))
                             ) : (
                                 <div className="col-12">
@@ -454,6 +507,14 @@ const Items = () => {
                     </div>
                 )}
             </div>
+            <CartDropdown
+                cartItems={cartItems}
+                isOpen={isCartOpen}
+                onToggle={toggleCart}
+                onUpdateQuantity={updateCartQuantity}
+                onRemoveItem={removeFromCart}
+                onClearCart={clearCart}
+            />
         </div>
     );
 };

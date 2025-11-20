@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import '../Card.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Card = ({ producto }) => { 
-    const { img, name, price, originalPrice, badge, descripciones } = producto;
+const Card = ({ producto, onAddToCart }) => {  // Agrega onAddToCart como prop
+    const { img, name, price, originalPrice, badge, descripciones, precioNumerico } = producto;
     const [tallaSeleccionada, setTallaSeleccionada] = useState('');
     const [colorSeleccionado, setColorSeleccionado] = useState('');
 
@@ -14,11 +14,11 @@ const Card = ({ producto }) => {
     )];
 
     // Obtener colores únicos disponibles para la talla seleccionada
-    const coloresDisponibles = tallaSeleccionada 
+    const coloresDisponibles = tallaSeleccionada
         ? [...new Set(descripciones
             .filter(desc => desc.talla === tallaSeleccionada && desc.cantidad > 0)
             .map(desc => desc.color)
-          )]
+        )]
         : [];
 
     // Función para manejar selección de talla
@@ -40,11 +40,33 @@ const Card = ({ producto }) => {
         return color.charAt(0).toUpperCase() + color.slice(1);
     };
 
+    // Función para manejar agregar al carrito
+    const handleAddToCart = () => {
+        if (productoDisponible && onAddToCart) {
+            // Crear el objeto del producto para el carrito
+            const productoCarrito = {
+                id: `${name}-${tallaSeleccionada}-${colorSeleccionado}`, // ID único
+                name: name,
+                img: img,
+                price: price,
+                precioNumerico: precioNumerico,
+                talla: tallaSeleccionada,
+                color: colorSeleccionado,
+                quantity: 1
+            };
+            onAddToCart(productoCarrito);
+
+            // Opcional: Resetear selecciones después de agregar
+            // setTallaSeleccionada('');
+            // setColorSeleccionado('');
+        }
+    };
+
     return (
         <div className="product-column">
             <div className="card">
                 <div className="card-img-container">
-                    <img src={img} className="card-img-top" alt={name}/>
+                    <img src={img} className="card-img-top" alt={name} />
                     {badge && <span className="product-badge">{badge}</span>}
                 </div>
                 <div className="card-body">
@@ -72,28 +94,29 @@ const Card = ({ producto }) => {
                             </div>
                         </div>
 
-                       
-                            <div className="colores-dropdown-section">
-                                <h6>Color:</h6>
-                                <select 
-                                    className="color-dropdown"
-                                    value={colorSeleccionado}
-                                    onChange={handleColorChange}
-                                >
-                                    <option value="">Select color</option>
-                                    {coloresDisponibles.map(color => (
-                                        <option key={color} value={color}>
-                                            {formatColorName(color)}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        
+
+                        <div className="colores-dropdown-section">
+                            <h6>Color:</h6>
+                            <select
+                                className="color-dropdown"
+                                value={colorSeleccionado}
+                                onChange={handleColorChange}
+                            >
+                                <option value="">Select color</option>
+                                {coloresDisponibles.map(color => (
+                                    <option key={color} value={color}>
+                                        {formatColorName(color)}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                     </div>
                     <div className="card-actions">
-                        <button 
+                        <button
                             className={`btn-add-cart ${!productoDisponible ? 'disabled' : ''}`}
                             disabled={!productoDisponible}
+                            onClick={handleAddToCart}
                         >
                             {productoDisponible ? 'Add to Cart' : 'Add to my Cart'}
                         </button>
