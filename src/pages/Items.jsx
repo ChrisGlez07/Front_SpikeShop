@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import Card from "./card.jsx";
 import "../Items.css";
 import '../Filters.css';
+import '../CartDropdown.css';
+import CartDropdown from "./CartDropdown.jsx";
 
 const Items = () => {
     const [productos, setProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [isCartOpen, setIsCartOpen] = useState(false);
     
     const [filtros, setFiltros] = useState({
         categorias: [],
@@ -137,7 +141,50 @@ const Items = () => {
         },
     ];
 
+  // En tu Items.jsx, modifica la función addToCart así:
+    const addToCart = (productoCarrito) => {
+        console.log("Intentando agregar al carrito:", productoCarrito);
+        setCartItems(prevItems => {
+            const existingItemIndex = prevItems.findIndex(item =>
+                item.id === productoCarrito.id
+            );
 
+            if (existingItemIndex !== -1) {
+                // Si el producto ya está en el carrito, aumentar cantidad
+                return prevItems.map((item, index) =>
+                    index === existingItemIndex
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
+            } else {
+                // Si es un producto nuevo, agregarlo al carrito
+                console.log("Agregando al carrito:", productoCarrito);
+                return [...prevItems, productoCarrito];
+
+            }
+        });
+    };
+    const updateCartQuantity = (index, newQuantity) => {
+        if (newQuantity < 1) return;
+
+        setCartItems(prevItems =>
+            prevItems.map((item, i) =>
+                i === index ? { ...item, quantity: newQuantity } : item
+            )
+        );
+    };
+
+    const removeFromCart = (index) => {
+        setCartItems(prevItems => prevItems.filter((_, i) => i !== index));
+    };
+
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
+    const toggleCart = () => {
+        setIsCartOpen(!isCartOpen);
+    };
     // Manejar cambios en los filtros
     const handleCategoriaChange = (categoria) => {
         setFiltros(prev => {
@@ -440,7 +487,8 @@ const Items = () => {
                         <div className="row">
                             {productosFiltrados.length > 0 ? (
                                 productosFiltrados.map((producto, index) => (
-                                    <Card key={index} producto={producto} />
+                                    <Card key={index} producto={producto} 
+                                    onAddToCart={addToCart} />
                                 ))
                             ) : (
                                 <div className="col-12">
@@ -454,6 +502,14 @@ const Items = () => {
                     </div>
                 )}
             </div>
+            <CartDropdown
+                cartItems={cartItems}
+                isOpen={isCartOpen}
+                onToggle={toggleCart}
+                onUpdateQuantity={updateCartQuantity}
+                onRemoveItem={removeFromCart}
+                onClearCart={clearCart}
+            />
         </div>
     );
 };
