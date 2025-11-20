@@ -6,6 +6,7 @@ import Contact from './pages/Contact.jsx'
 import Search from './pages/search.jsx'
 import Login from './pages/Login.jsx'
 import Items from './pages/Items.jsx'
+import Admin from './pages/adminhome.jsx'
 import { Routes, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -34,6 +35,7 @@ function App() {
                   <Link to="/contact" className="nav-link">Contact us</Link>
                   <Link to="/login" className="nav-link">Login</Link>
                   <Link to="/items" className="nav-link">Online Shop</Link>
+                  <Link to="/admin" className="nav-link">Admin</Link>
                   <Search />
                 </nav>
              </div>
@@ -46,6 +48,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/items' element={<Items />} />
+          <Route path='/admin/*' element={<Admin />} />
         </Routes>
       </div>
     </>
