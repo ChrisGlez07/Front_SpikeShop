@@ -6,6 +6,7 @@ import Contact from './pages/contact.jsx'
 import Registeradmin from './pages/registeradmin.jsx'
 import Search from './pages/search.jsx'
 import Login from './pages/Login.jsx'
+import Createproduct from './pages/createproduct.jsx'
 import Items from './pages/Items.jsx'
 import Admin from './pages/adminhome.jsx'
 import { Routes, Route, Link } from 'react-router-dom';
@@ -110,6 +111,7 @@ function App() {
           <Route path='/items' element={<Items />} />
           <Route path='/admin/*' element={<Admin />} />
           <Route path='/registeradmin' element={<Registeradmin />} />
+          <Route path='/createproduct' element={<Createproduct />} />
         </Routes>
       </div>
     </>

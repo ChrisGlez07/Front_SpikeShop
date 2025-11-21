@@ -24,7 +24,7 @@ function Admin() {
               <span className="button-text">User Management</span>
             </Link>
           
-            <Link to="/" className="admin-button spike-stock-button">
+            <Link to="/createproduct" className="admin-button spike-stock-button">
               <div className="button-image-container">
                 <img 
                   src="https://i.pinimg.com/736x/ea/e5/91/eae59192621aed18bd59a538f95f8637.jpg" 
