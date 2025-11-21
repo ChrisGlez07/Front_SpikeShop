@@ -1,7 +1,15 @@
 import React from 'react';
 import '../CartDropdown.css';
 
-const CartDropdown = ({ cartItems, isOpen, onToggle, onUpdateQuantity, onRemoveItem, onClearCart }) => {
+const CartDropdown = ({ 
+  cartItems, 
+  isOpen, 
+  onToggle, 
+  onUpdateQuantity, 
+  onRemoveItem, 
+  onSaveCartItems,
+  isLoading = false 
+}) => {
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.precioNumerico * item.quantity), 0);
 
@@ -85,8 +93,12 @@ const CartDropdown = ({ cartItems, isOpen, onToggle, onUpdateQuantity, onRemoveI
                 <button className="btn-checkout" onClick={() => alert('Proceeding to checkout!')}>
                   Checkout
                 </button>
-                <button className="btn-clear" onClick={onClearCart}>
-                  Clear Cart
+                <button 
+                  className="btn-clear" 
+                  onClick={onSaveCartItems}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Saving..." : "Save Shopping Cart"}
                 </button>
               </div>
             </div>

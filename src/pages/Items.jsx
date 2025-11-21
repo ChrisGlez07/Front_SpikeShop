@@ -8,10 +8,13 @@ import CartDropdown from "./CartDropdown.jsx";
 const Items = () => {
     const [productos, setProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
-    
+
     const [filtros, setFiltros] = useState({
         categorias: [],
         precio: '',
@@ -20,6 +23,18 @@ const Items = () => {
 
     const API_BASE_URL = import.meta.env.VITE_BASE_URL;
     const APP_TOKEN = import.meta.env.VITE_TOKEN;
+
+    useEffect(() => {
+        const savedUser = localStorage.getItem('user_session');
+        if (savedUser) {
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch (error) {
+                console.error('Error parsing saved user:', error);
+                localStorage.removeItem('user_session');
+            }
+        }
+    }, []);
 
     const Articulos = [
         {
@@ -97,7 +112,7 @@ const Items = () => {
                 }
             ]
         },
-        {   
+        {
             id: 4,
             name: "Sneakers Casual",
             img: "https://i.pinimg.com/736x/2a/6b/10/2a6b10e91896a1d96838ed3c000617e4.jpg",
@@ -146,7 +161,7 @@ const Items = () => {
         },
     ];
 
-  // En tu Items.jsx, modifica la función addToCart así:
+    // En tu Items.jsx, modifica la función addToCart así:
     const addToCart = (productoCarrito) => {
         console.log("Intentando agregar al carrito:", productoCarrito);
         setCartItems(prevItems => {
@@ -183,8 +198,68 @@ const Items = () => {
         setCartItems(prevItems => prevItems.filter((_, i) => i !== index));
     };
 
-    const clearCart = () => {
-        setCartItems([]);
+    const saveCartItems = async () => {
+        if (!user || !user.email) {
+            setError("Please log in to save your cart");
+            alert("You need to be logged in to save your cart");
+            return;
+        }
+
+        if (cartItems.length === 0) {
+            setError("Your cart is empty");
+            alert("Your cart is empty. Add some items first.");
+            return;
+        }
+
+        setIsLoading(true);
+        setError("");
+
+        try {
+            const total = cartItems.reduce((sum, item) =>
+                sum + (item.precioNumerico * item.quantity), 0
+            );
+
+            // Usar un ID único para cada producto
+            const cartData = {
+                usuarioEmail: user.email,
+                productos: cartItems.map(item => ({
+                    productoId: item._id || `local_${item.id}_${Date.now()}`, // ID único
+                    nombre: item.name,
+                    tipo: item.tipo || item.badge || "General",
+                    cantidadComprada: item.quantity,
+                    precioUnitario: item.precioNumerico,
+                    imagen: item.img
+                })),
+                total: total
+            };
+
+            console.log("Enviando datos al servidor:", cartData);
+
+            const response = await fetch(`${API_BASE_URL}/api/carrito/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${APP_TOKEN}`,
+                },
+                body: JSON.stringify(cartData)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log("Cart saved successfully:", result);
+            alert("Cart saved successfully!");
+
+        } catch (error) {
+            console.error("Error saving cart items:", error);
+            setError("Failed to save cart: " + error.message);
+            alert("Failed to save cart. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const toggleCart = () => {
@@ -196,7 +271,7 @@ const Items = () => {
             const nuevasCategorias = prev.categorias.includes(categoria)
                 ? prev.categorias.filter(cat => cat !== categoria)
                 : [...prev.categorias, categoria];
-            
+
             return { ...prev, categorias: nuevasCategorias };
         });
     };
@@ -229,8 +304,8 @@ const Items = () => {
 
         // Filtrar por categoría (badge/tipo)
         if (filtros.categorias.length > 0) {
-            resultados = resultados.filter(producto => 
-                filtros.categorias.includes(producto.badge) || 
+            resultados = resultados.filter(producto =>
+                filtros.categorias.includes(producto.badge) ||
                 filtros.categorias.includes(producto.tipo)
             );
         }
@@ -239,17 +314,17 @@ const Items = () => {
         if (filtros.precio) {
             switch (filtros.precio) {
                 case 'under400':
-                    resultados = resultados.filter(producto => 
+                    resultados = resultados.filter(producto =>
                         producto.precioNumerico < 400
                     );
                     break;
                 case 'price400-700':
-                    resultados = resultados.filter(producto => 
+                    resultados = resultados.filter(producto =>
                         producto.precioNumerico >= 400 && producto.precioNumerico <= 700
                     );
                     break;
                 case 'over700':
-                    resultados = resultados.filter(producto => 
+                    resultados = resultados.filter(producto =>
                         producto.precioNumerico > 700
                     );
                     break;
@@ -262,7 +337,7 @@ const Items = () => {
         if (filtros.talla) {
             resultados = resultados.filter(producto =>
                 producto.talla === filtros.talla ||
-                (producto.descripciones && producto.descripciones.some(desc => 
+                (producto.descripciones && producto.descripciones.some(desc =>
                     desc.talla === filtros.talla && desc.cantidad > 0
                 ))
             );
@@ -282,6 +357,7 @@ const Items = () => {
 
         if (Array.isArray(productosArray) && productosArray.length > 0) {
             const productosMapeados = productosArray.map((producto) => ({
+                id: producto._id,
                 name: producto.nombre,
                 img: producto.imagen,
                 price: `$${producto.precio}`,
@@ -344,13 +420,13 @@ const Items = () => {
 
     const Filters = () => {
         return (
-            <div className="filters-section"> 
+            <div className="filters-section">
                 <div className="filter-group">
                     <h6>Category</h6>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="checkbox" 
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
                             id="Men"
                             checked={filtros.categorias.includes('Men')}
                             onChange={() => handleCategoriaChange('Men')}
@@ -360,9 +436,9 @@ const Items = () => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="checkbox" 
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
                             id="Women"
                             checked={filtros.categorias.includes('Women')}
                             onChange={() => handleCategoriaChange('Women')}
@@ -372,9 +448,9 @@ const Items = () => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="checkbox" 
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
                             id="Kids"
                             checked={filtros.categorias.includes('Kids')}
                             onChange={() => handleCategoriaChange('Kids')}
@@ -384,15 +460,15 @@ const Items = () => {
                         </label>
                     </div>
                 </div>
-                
+
                 <div className="filter-group">
                     <h6>Price range</h6>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="radio" 
-                            name="priceRange" 
-                            id="under400" 
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            name="priceRange"
+                            id="under400"
                             checked={filtros.precio === 'under400'}
                             onChange={() => handlePrecioChange('under400')}
                         />
@@ -401,10 +477,10 @@ const Items = () => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="radio" 
-                            name="priceRange" 
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            name="priceRange"
                             id="price400-700"
                             checked={filtros.precio === 'price400-700'}
                             onChange={() => handlePrecioChange('price400-700')}
@@ -414,25 +490,25 @@ const Items = () => {
                         </label>
                     </div>
                     <div className="form-check">
-                        <input 
-                            className="form-check-input" 
-                            type="radio" 
-                            name="priceRange" 
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            name="priceRange"
                             id="over700"
                             checked={filtros.precio === 'over700'}
                             onChange={() => handlePrecioChange('over700')}
                         />
                         <label className="form-check-label" htmlFor="over700">
-                           More than $700
+                            More than $700
                         </label>
                     </div>
                 </div>
-                
+
                 <div className="filter-group">
                     <h6>Size</h6>
                     <div className="size-options">
                         {['S', 'M', 'L', 'XL'].map(talla => (
-                            <button 
+                            <button
                                 key={talla}
                                 className={`btn btn-sm ${filtros.talla === talla ? 'btn-primary' : 'btn-outline-secondary'}`}
                                 onClick={() => handleTallaChange(talla)}
@@ -444,7 +520,7 @@ const Items = () => {
                 </div>
 
                 <div className="filter-actions">
-                    <button 
+                    <button
                         className="btn btn-outline-primary btn-sm w-100"
                         onClick={limpiarFiltros}
                     >
@@ -460,7 +536,7 @@ const Items = () => {
         );
     };
 
-     return (
+    return (
         <div className="items-page-container">
             <div className="filters-sidebar">
                 <Filters />
@@ -492,8 +568,8 @@ const Items = () => {
                         <div className="row">
                             {productosFiltrados.length > 0 ? (
                                 productosFiltrados.map((producto, index) => (
-                                    <Card key={index} producto={producto} 
-                                    onAddToCart={addToCart} />
+                                    <Card key={index} producto={producto}
+                                        onAddToCart={addToCart} />
                                 ))
                             ) : (
                                 <div className="col-12">
@@ -513,7 +589,8 @@ const Items = () => {
                 onToggle={toggleCart}
                 onUpdateQuantity={updateCartQuantity}
                 onRemoveItem={removeFromCart}
-                onClearCart={clearCart}
+                onSaveCartItems={saveCartItems}
+                isLoading={isLoading}
             />
         </div>
     );
