@@ -108,8 +108,9 @@ export default function CreateProduct() {
       setImagen("");
       setDescripcion([]);
 
-    } catch (err) {
-      alert("Error connecting to the server.");
+    } catch (error) {
+      console.error("Error creating product:", error);
+      alert("There was an error creating the product. Please try again.");
     }
   };
 
