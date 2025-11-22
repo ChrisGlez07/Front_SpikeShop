@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx'
 import Createproduct from './pages/createproduct.jsx'
 import Items from './pages/Items.jsx'
 import Admin from './pages/adminhome.jsx'
+import Admin2 from './pages/Adminhome2.jsx'
 import { Routes, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -110,8 +111,9 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/items' element={<Items />} />
           <Route path='/admin/*' element={<Admin />} />
+          <Route path='/admin2/*' element={<Admin2 />} />
           <Route path='/registeradmin' element={<Registeradmin />} />
-          <Route path='/createproduct' element={<Createproduct />} />
+          <Route path='/createproduct' element={<Createproduct user={user} />} />
         </Routes>
       </div>
     </>

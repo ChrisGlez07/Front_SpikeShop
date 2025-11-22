@@ -11,6 +11,8 @@ const Register = () => {
   const [role, setUserType] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const navigate = useNavigate();
 
   const API_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -23,9 +25,40 @@ const Register = () => {
     console.log(`User Type: ${role}`);
   }, [username, email, password, role]);
 
+    useEffect(() => {
+    const checkUserAuth = () => {
+      try {
+        const savedUser = localStorage.getItem('user_session');
+        
+        if (savedUser) {
+          const userData = JSON.parse(savedUser);
+          setUser(userData);
+          
+          if (userData.role !== 'admin') {
+            alert("You don´t have permission to access this page");
+            navigate('/items');
+            return;
+          }
+        } else {
+          alert("You must log in to access this page");
+          navigate('/login');
+          return;
+        }
+      } catch (error) {
+        console.error('Error verificando autenticación:', error);
+        localStorage.removeItem('user_session');
+        navigate('/login');
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    checkUserAuth();
+  }, [navigate]);
+
   const handleRegister = async () => {
     if (!username || !email || !password) {
-      setError("Por favor completa todos los campos");
+      setError("Please complete all fields");
       return;
     }
 
@@ -52,19 +85,19 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        console.log("Registro exitoso:", data);
-        setSuccess("Usuario registrado exitosamente");
+        console.log("Succesfull Register:", data);
+        setSuccess("User registered successfully");
         
         setTimeout(() => {
           navigate('/login');
         }, 2000);
       } else {
-        setError(data.message || "Error en el registro");
+        setError(data.message || "Register Error");
         setSuccess("");
       }
     } catch (error) {
-      console.error("Error en registro:", error);
-      setError("Error de conexión con el servidor");
+      console.error("Register Error:", error);
+      setError("Connection error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -101,8 +134,6 @@ return (
           
           />
         </div>
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
  <div className="userTypeRegister">
           <select
             value={role}
@@ -121,6 +152,9 @@ return (
         >
           {isLoading ? "Registrando..." : "Register"}
         </button>
+
+        {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
 
         <Link to="/admin" className="nav-link">Back to Admin Home</Link>
       </div>

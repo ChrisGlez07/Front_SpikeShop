@@ -61,7 +61,7 @@ const Login = ({ onUserLogin }) => {
 
       const data = await response.json();
 
-      console.log("Respuesta completa del servidor:", data); 
+      console.log("Complete Answer form the server:", data); 
 
       if (response.ok && data.message === "Login successful") {
         console.log("Login exitoso - Datos del usuario:", data.data.user);
@@ -89,14 +89,14 @@ const Login = ({ onUserLogin }) => {
           
           navigate('/dashboard');
         } else {
-          setError("No se recibieron datos del usuario");
+          setError("User data is missing in the response");
         }
       } else {
         setError(data.message || "Error en el login");
       }
     } catch (error) {
       console.error("Error en login:", error);
-      setError("Error de conexión con el servidor");
+      setError("Connection error. Please try again.");
     } finally {
       setIsLoading(false);
     }
