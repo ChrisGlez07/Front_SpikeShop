@@ -1,128 +1,82 @@
+/* Contenedor principal del formulario */
 .create-container {
-  max-width: 650px;
+  max-width: 600px;
   background: #ffffff;
-  padding: 35px;
-  border-radius: 20px;
+  padding: 25px;
+  border-radius: 12px;
   margin: 40px auto;
-  box-shadow: 0 8px 25px rgba(230, 60, 90, 0.25);
-  border: 2px solid #ff6b81;
-  transition: all 0.3s ease;
+  border: 1px solid #ff6b81;
 }
 
-.create-container:hover {
-  box-shadow: 0 12px 35px rgba(230, 60, 90, 0.35);
-}
-
+/* Título */
 .create-container h2 {
   text-align: center;
-  margin-bottom: 25px;
-  font-size: 28px;
+  margin-bottom: 20px;
+  font-size: 24px;
   color: #e53e53;
-  font-weight: 700;
 }
 
+/* Inputs y selects */
 .create-form input,
 .create-form select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 2px solid #ffc6d0;
-  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ffc6d0;
+  border-radius: 8px;
   background: #fff7f9;
-  font-size: 15px;
-  transition: all 0.2s ease;
-  color: black;
+    color: #fc0a7b; 
 }
 
-.create-form input:focus,
-.create-form select:focus {
-  border-color: #ff5770;
-  box-shadow: 0 0 6px rgba(255, 87, 112, 0.4);
-  outline: none;
-}
-
+/* Fila donde van dos inputs juntos */
 .desc-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Botón para agregar */
+.btn-add {
+  background: #eb0124;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* descripciones */
+.desc-list {
+  background: #df647c;
+  padding: 12px;
+  border-radius: 10px;
   margin-bottom: 18px;
 }
 
-.btn-add {
-  background: linear-gradient(135deg, #ff5770, #ff2e4f);
-  color: black;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.25s ease;
-}
-
-.btn-add:hover {
-  background: linear-gradient(135deg, #ff2e4f, #d6243d);
-}
-
-.desc-list {
-  background: #ffe0e6;
-  padding: 15px;
-  border-radius: 12px;
-  border-left: 5px solid #ff5770;
-  margin-bottom: 20px;
-}
-
-.desc-list h5 {
-  margin-bottom: 10px;
-  color: #e53e53;
-  font-weight: 700;
-}
-
+/* Cada item dentro de la lista */
 .desc-item {
   background: #ffffff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 7px;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
   border: 1px solid #ffd2db;
   font-size: 14px;
 }
 
-.btn-submit {
-  background: linear-gradient(135deg, #ff5770, #ff2e4f);
+
+.btn-submit, .home-link {
+  background: #eb0124;
   color: white;
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 700;
-  transition: background 0.25s ease, transform 0.1s ease;
 }
-
 .btn-submit:hover {
-  background: linear-gradient(135deg, #ff2e4f, #d6243d);
-  transform: scale(1.03);
+  background: #f05a71;
 }
-
-.home-link {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff5770, #ff2e4f);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
-  margin-top: 10px;
-  transition: background 0.25s ease, transform 0.1s ease;
-  cursor: pointer;
-}
-
-.home-link:hover {
-  background: linear-gradient(135deg, #ff2e4f, #d6243d);
-  transform: scale(1.03);
-  color: white;
-  text-decoration: none;
+.btn-add:hover {
+  background: #f05a71;
 }
