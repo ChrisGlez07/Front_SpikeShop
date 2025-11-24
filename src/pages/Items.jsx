@@ -3,7 +3,9 @@ import Card from "./card.jsx";
 import "../Items.css";
 import '../Filters.css';
 import '../CartDropdown.css';
+import '../PurchaseConfirmationModal.css';
 import CartDropdown from "./CartDropdown.jsx";
+import PurchaseConfirmationModal from "./PurchaseConfirmationModal.jsx";
 
 const Items = () => {
     const [productos, setProductos] = useState([]);
@@ -14,6 +16,9 @@ const Items = () => {
     const [error, setError] = useState("");
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [lastCartId, setLastCartId] = useState("");
+    const [lastCartData, setLastCartData] = useState({});
 
     const [filtros, setFiltros] = useState({
         categorias: [],
@@ -163,24 +168,22 @@ const Items = () => {
 
     // En tu Items.jsx, modifica la función addToCart así:
     const addToCart = (productoCarrito) => {
-        console.log("Intentando agregar al carrito:", productoCarrito);
+        console.log("Agregando al carrito:", productoCarrito);
         setCartItems(prevItems => {
             const existingItemIndex = prevItems.findIndex(item =>
-                item.id === productoCarrito.id
+                item.id === productoCarrito.id &&
+                item.talla === productoCarrito.talla &&
+                item.color === productoCarrito.color
             );
 
             if (existingItemIndex !== -1) {
-                // Si el producto ya está en el carrito, aumentar cantidad
                 return prevItems.map((item, index) =>
                     index === existingItemIndex
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             } else {
-                // Si es un producto nuevo, agregarlo al carrito
-                console.log("Agregando al carrito:", productoCarrito);
-                return [...prevItems, productoCarrito];
-
+                return [...prevItems, { ...productoCarrito, quantity: 1 }];
             }
         });
     };
@@ -199,69 +202,114 @@ const Items = () => {
     };
 
     const saveCartItems = async () => {
-        if (!user || !user.email) {
-            setError("Please log in to save your cart");
-            alert("You need to be logged in to save your cart");
-            return;
+    if (!user || !user.email) {
+        alert("You need to be logged in to save your cart");
+        return;
+    }
+
+    if (cartItems.length === 0) {
+        alert("Your cart is empty. Add some items first.");
+        return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+        const total = cartItems.reduce((sum, item) =>
+            sum + (item.precioNumerico * item.quantity), 0
+        );
+
+        const cartData = {
+            usuarioEmail: user.email,
+            productos: cartItems.map(item => ({
+                productoId: item._id || `local_${item.id}_${Date.now()}`,
+                nombre: item.name,
+                tipo: item.tipo || item.badge || "General",
+                cantidadComprada: item.quantity,
+                precioUnitario: item.precioNumerico,
+                imagen: item.img,
+                descripcion: [
+                    {
+                        color: item.color || "default",
+                        talla: item.talla || "M",
+                        cantidad: item.quantity
+                    }
+                ]
+            })),
+            total: total,
+            estado: 'activo'
+        };
+
+        console.log("Enviando datos al servidor:", cartData);
+
+        const response = await fetch(`${API_BASE_URL}/api/carrito/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${APP_TOKEN}`,
+            },
+            body: JSON.stringify(cartData)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
 
-        if (cartItems.length === 0) {
-            setError("Your cart is empty");
-            alert("Your cart is empty. Add some items first.");
-            return;
-        }
+        const result = await response.json();
+        console.log("✅ RESPUESTA COMPLETA DEL SERVIDOR:", result);
 
-        setIsLoading(true);
-        setError("");
+        // DEBUG: Verificar todas las posibles ubicaciones del ID
+        console.log("🔍 Buscando cartId en:", {
+            result_data: result.data,
+            result_data_id: result.data?._id,
+            result_data_carritoId: result.data?.carritoId,
+            result_carritoId: result.carritoId,
+            result_id: result._id
+        });
 
-        try {
-            const total = cartItems.reduce((sum, item) =>
-                sum + (item.precioNumerico * item.quantity), 0
-            );
+        // Obtener el ID del carrito con más opciones
+        const cartId = result.data?._id || 
+                      result.data?.carritoId || 
+                      result.carritoId || 
+                      result._id ||
+                      `temp_${Date.now()}`;
 
-            // Usar un ID único para cada producto
-            const cartData = {
-                usuarioEmail: user.email,
-                productos: cartItems.map(item => ({
-                    productoId: item._id || `local_${item.id}_${Date.now()}`, // ID único
-                    nombre: item.name,
-                    tipo: item.tipo || item.badge || "General",
-                    cantidadComprada: item.quantity,
-                    precioUnitario: item.precioNumerico,
-                    imagen: item.img
-                })),
-                total: total
-            };
+        console.log("🎯 Cart ID encontrado:", cartId);
 
-            console.log("Enviando datos al servidor:", cartData);
+        setLastCartId(cartId);
+        setLastCartData({
+            total: total,
+            productCount: cartItems.length,
+            products: cartItems.map(item => ({ // ← Agregar información de productos
+                name: item.name,
+                quantity: item.quantity,
+                price: item.precioNumerico,
+                color: item.color,
+                size: item.talla
+            }))
+        });
 
-            const response = await fetch(`${API_BASE_URL}/api/carrito/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${APP_TOKEN}`,
-                },
-                body: JSON.stringify(cartData)
-            });
+        // Mostrar modal de confirmación
+        setShowConfirmation(true);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-            }
+        // Limpiar carrito después de guardar exitosamente
+        setCartItems([]);
+        setIsCartOpen(false);
 
-            const result = await response.json();
-            console.log("Cart saved successfully:", result);
-            alert("Cart saved successfully!");
+    } catch (error) {
+        console.error("Error saving cart items:", error);
+        setError("Failed to save cart: " + error.message);
+        alert("Failed to save cart. Please try again.");
+    } finally {
+        setIsLoading(false);
+    }
+};
 
-        } catch (error) {
-            console.error("Error saving cart items:", error);
-            setError("Failed to save cart: " + error.message);
-            alert("Failed to save cart. Please try again.");
-        } finally {
-            setIsLoading(false);
-        }
+    const closeConfirmation = () => {
+        setShowConfirmation(false);
     };
-
     const toggleCart = () => {
         setIsCartOpen(!isCartOpen);
     };
@@ -591,6 +639,12 @@ const Items = () => {
                 onRemoveItem={removeFromCart}
                 onSaveCartItems={saveCartItems}
                 isLoading={isLoading}
+            />
+            <PurchaseConfirmationModal
+                isOpen={showConfirmation}
+                onClose={closeConfirmation}
+                cartId={lastCartId}
+                cartData={lastCartData}
             />
         </div>
     );
