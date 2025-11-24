@@ -90,9 +90,6 @@ const CartDropdown = ({
                 <span>${totalPrice.toFixed(2)}</span>
               </div>
               <div className="cart-actions">
-                <button className="btn-checkout" onClick={() => alert('Proceeding to checkout!')}>
-                  Checkout
-                </button>
                 <button 
                   className="btn-clear" 
                   onClick={onSaveCartItems}

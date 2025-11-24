@@ -179,15 +179,6 @@
   font-weight: 500;
 }
 
-.btn-checkout {
-  background: #28a745;
-  color: white;
-}
-
-.btn-checkout:hover {
-  background: #218838;
-}
-
 .btn-order {
   background: #6c757d;
   color: white;

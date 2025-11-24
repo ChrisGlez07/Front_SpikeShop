@@ -118,9 +118,8 @@ const Card = ({ producto, onAddToCart }) => {  // Agrega onAddToCart como prop
                             disabled={!productoDisponible}
                             onClick={handleAddToCart}
                         >
-                            {productoDisponible ? 'Add to Cart' : 'Add to my Cart'}
+                            {productoDisponible ? 'Add to Cart' : 'Add to Cart'}
                         </button>
-                        <button className="btn-favorite">❤</button>
                     </div>
                 </div>
             </div>

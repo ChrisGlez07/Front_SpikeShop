@@ -25,7 +25,7 @@ ${cartData?.products ? cartData.products.map(product =>
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h3>✅ Purchase Order Successfully Created</h3>
+          <h3>Purchase Order Successfully Created</h3>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
         

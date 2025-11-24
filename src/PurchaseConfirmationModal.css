@@ -24,7 +24,7 @@
 }
 
 .modal-header {
-  background: #28a745;
+  background: #d8914b;
   color: white;
   padding: 20px;
   border-radius: 12px 12px 0 0;
@@ -117,18 +117,82 @@
 }
 
 .btn-primary {
-  background: #007bff;
+  background: linear-gradient(145deg, #2d3436, #636e72);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
+  position: relative;
+
+  /* Efecto 3D ultra realista en negro */
+  box-shadow:
+    0 10px 25px rgba(45, 52, 54, 0.4),
+    0 6px 12px rgba(45, 52, 54, 0.3),
+    0 3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary:hover {
-  background: #0056b3;
+  /* Efecto 3D al hover - parece que sale de la pantalla */
+  transform:
+    translateY(-5px) scale(1.04) perspective(600px) rotateX(6deg);
+
+  box-shadow:
+    0 18px 35px rgba(45, 52, 54, 0.5),
+    0 10px 20px rgba(45, 52, 54, 0.4),
+    0 5px 10px rgba(0, 0, 0, 0.4),
+    inset 0 3px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+
+  background: linear-gradient(145deg, #2d3436, #57606f);
 }
+
+.btn-primary:active {
+  /* Efecto al hacer clic - como si se presionara */
+  transform:
+    translateY(-2px) scale(0.98);
+
+  box-shadow:
+    0 6px 12px rgba(45, 52, 54, 0.4),
+    0 3px 6px rgba(45, 52, 54, 0.3),
+    inset 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Versión alternativa con gradiente negro más intenso */
+.btn-primary.dark-ultra {
+  background: linear-gradient(145deg, #000000, #2d3436);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.btn-primary.dark-ultra:hover {
+  box-shadow:
+    0 18px 35px rgba(0, 0, 0, 0.6),
+    0 10px 20px rgba(0, 0, 0, 0.5),
+    0 5px 10px rgba(0, 0, 0, 0.4),
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.6);
+
+  background: linear-gradient(145deg, #000000, #2f3542);
+}
+
 .order-products {
   margin-top: 15px;
   padding-top: 15px;
