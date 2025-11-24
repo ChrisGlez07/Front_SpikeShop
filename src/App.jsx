@@ -7,6 +7,7 @@ import Registeradmin from './pages/registeradmin.jsx'
 import Search from './pages/search.jsx'
 import Login from './pages/Login.jsx'
 import Createproduct from './pages/createproduct.jsx'
+import EditProduct from './pages/editproduct.jsx'
 import Items from './pages/Items.jsx'
 import Admin from './pages/adminhome.jsx'
 import Admin2 from './pages/Adminhome2.jsx'
@@ -113,6 +114,7 @@ function App() {
           <Route path='/admin/*' element={<Admin />} />
           <Route path='/admin2/*' element={<Admin2 />} />
           <Route path='/registeradmin' element={<Registeradmin />} />
+          <Route path='/editproduct' element={<EditProduct user={user} />} />
           <Route path='/createproduct' element={<Createproduct user={user} />} />
         </Routes>
       </div>

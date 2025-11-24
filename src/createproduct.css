@@ -5,15 +5,19 @@
   padding: 25px;
   border-radius: 12px;
   margin: 40px auto;
-  border: 1px solid #ff6b81;
+  border: 1px solid #ff6b6e;
 }
+
+
+
 
 /* Título */
 .create-container h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  color: #e53e53;
+  color: #050001;
+ 
 }
 
 /* Inputs y selects */
@@ -25,7 +29,8 @@
   border: 1px solid #ffc6d0;
   border-radius: 8px;
   background: #fff7f9;
-    color: #fc0a7b; 
+  color: #3e021e; 
+ 
 }
 
 /* Fila donde van dos inputs juntos */
@@ -51,6 +56,7 @@
   padding: 12px;
   border-radius: 10px;
   margin-bottom: 18px;
+
 }
 
 /* Cada item dentro de la lista */
@@ -61,6 +67,7 @@
   margin-bottom: 6px;
   border: 1px solid #ffd2db;
   font-size: 14px;
+  
 }
 
 
@@ -79,4 +86,42 @@
 }
 .btn-add:hover {
   background: #f05a71;
+}
+
+.product-list {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ffd0d7;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.product-item {
+  padding: 10px;
+  background: #fff4f6;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border: 1px solid #ffc6d0;
+}
+
+.product-item:hover {
+  background: #ffe5ea;
+}
+
+.btn-delete {
+  background: #b30021;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.btn-delete:hover {
+  background: #e03a4b;
 }
