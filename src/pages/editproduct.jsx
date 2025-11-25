@@ -178,7 +178,7 @@ export default function EditProducto() {
 
     const handleAddVariation = () => {
         const newVariation = {
-            color: "red",
+            color: "black",
             talla: "M",
             cantidad: 0
         };
@@ -352,52 +352,77 @@ export default function EditProducto() {
 
                 {formData && (
                     <form onSubmit={handleSubmit} className="edit-form">
-                        <label>Producto ID</label>
-                        <input
-                            type="text"
-                            value={formData.id || ''}
-                            disabled
-                            className="disabled-input"
-                        />
+                        <div className="form-columns-container">
+                            <div className="form-column">
+                                <label>Producto ID</label>
+                                <input
+                                    type="text"
+                                    value={formData.id || ''}
+                                    disabled
+                                    className="disabled-input"
+                                />
 
-                        <label>Name</label>
-                        <input
-                            name="nombre"
-                            value={formData.nombre || ''}
-                            onChange={handleChange}
-                            required
-                        />
+                                <label>Name</label>
+                                <input
+                                    name="nombre"
+                                    value={formData.nombre || ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                        
+                                <label>Type</label>
+                                <select
+                                    name="tipo"
+                                    value={formData.tipo || ''}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Choose one type</option>
+                                    <option value="Women">Women</option>
+                                    <option value="Men">Men</option>
+                                    <option value="Kids">Kids</option>
+                                </select>
+                            </div>
+                            
+                            <div className="form-column">
+                                <label>Price</label>
+                                <input
+                                    type="number"
+                                    step="1"
+                                    name="precio"
+                                    value={formData.precio || ''}
+                                    onChange={handleChange}
+                                    required
+                                />
 
-                        <label>Type</label>
-                        <select
-                            name="tipo"
-                            value={formData.tipo || ''}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Choose one type</option>
-                            <option value="Women">Women</option>
-                            <option value="Men">Men</option>
-                            <option value="Kids">Kids</option>
-                        </select>
-
-                        <label>Price</label>
-                        <input
-                            type="number"
-                            step="1"
-                            name="precio"
-                            value={formData.precio || ''}
-                            onChange={handleChange}
-                            required
-                        />
-
-                        <label>Url Link Image</label>
-                        <input
-                            name="imagen"
-                            value={formData.imagen || ''}
-                            onChange={handleChange}
-                            required
-                        />
+                                <label>Url Link Image</label>
+                                <input
+                                    name="imagen"
+                                    value={formData.imagen || ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                
+                                <div className="image-preview-container">
+                                    <label>Image Preview</label>
+                                    <div className="image-preview">
+                                        {formData.imagen ? (
+                                            <img 
+                                                src={formData.imagen} 
+                                                alt="Product preview" 
+                                                onError={(e) => {
+                                                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkeT0iMC4zNWVtIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSI+SW1hZ2UgTm90IEZvdW5kPC90ZXh0Pjwvc3ZnPg==';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="no-image-placeholder">
+                                                <span>No image available</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="variations-header">
                             <h3>Variations</h3>
@@ -474,7 +499,7 @@ export default function EditProducto() {
                     </form>
                 )}
             </div>
-            <Footer />
-        </>
+        <Footer />
+    </>
     );
 }
