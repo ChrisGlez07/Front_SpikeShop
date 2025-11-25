@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 const APP_TOKEN = import.meta.env.VITE_TOKEN;
@@ -8,8 +10,41 @@ export default function EditProducto() {
     const [selectedId, setSelectedId] = useState("");
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
-    // ✅ Cargar productos
+    useEffect(() => {
+        const checkUserAuth = () => {
+            try {
+                const savedUser = localStorage.getItem('user_session');
+                
+                if (savedUser) {
+                    const userData = JSON.parse(savedUser);
+                    setUser(userData);
+                    
+                    if (userData.role !== 'admin') {
+                        alert("You don´t have permission to access this page");
+                        navigate('/items');
+                        return;
+                    }
+                } else {
+                    alert("You must log in to access this page");
+                    navigate('/login');
+                    return;
+                }
+            } catch (error) {
+                console.error('Error verificating Authentificators:', error);
+                localStorage.removeItem('user_session');
+                navigate('/login');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        checkUserAuth();
+    }, [navigate]);
+
     const fetchProductos = async () => {
         try {
             setLoading(true);
@@ -32,7 +67,6 @@ export default function EditProducto() {
             }
 
             const data = await response.json();
-            console.log("Datos recibidos del backend:", data);
 
             if (data && Array.isArray(data.data)) {
                 const productosProcesados = data.data.map(producto => ({
@@ -43,15 +77,13 @@ export default function EditProducto() {
                     imagen: producto.imagen,
                     descripcion: producto.descripcion || []
                 }));
-                console.log("Productos disponibles:", productosProcesados);
                 setProductos(productosProcesados);
             } else {
-                console.log("No se encontraron productos");
                 setProductos([]);
             }
 
         } catch (error) {
-            console.error("Error al obtener productos:", error.message);
+            console.error("Error obtain the products:", error.message);
             setProductos([]);
         } finally {
             setLoading(false);
@@ -59,18 +91,17 @@ export default function EditProducto() {
     };
 
     useEffect(() => {
-        fetchProductos();
-    }, []);
+        if (user && user.role === 'admin') {
+            fetchProductos();
+        }
+    }, [user]);
 
-    // ✅ Selección por ID - MÁS CONFIABLE
     const handleSelect = async (e) => {
         const id = e.target.value;
         setSelectedId(id);
 
         if (id) {
             try {
-                console.log("Buscando producto por ID:", id);
-                
                 const res = await fetch(`${API_BASE_URL}/productos/producto/${id}`, {
                     method: "GET",
                     headers: {
@@ -81,17 +112,14 @@ export default function EditProducto() {
                     credentials: 'include'
                 });
                 
-                console.log("Respuesta del servidor:", res.status, res.statusText);
-                
                 if (!res.ok) {
                     if (res.status === 404) {
-                        throw new Error(`Producto no encontrado con ID: "${id}"`);
+                        throw new Error(`Product not found with ID: "${id}"`);
                     }
                     throw new Error(`Error ${res.status}: ${res.statusText}`);
                 }
                 
                 const data = await res.json();
-                console.log("Datos del producto:", data);
                 
                 if (data.data) {
                     setFormData({ 
@@ -103,10 +131,9 @@ export default function EditProducto() {
                         descripcion: data.data.descripcion || []
                     });
                 } else {
-                    throw new Error("No se encontraron datos del producto");
+                    throw new Error("The data for the selected product is missing.");
                 }
             } catch (err) {
-                console.log("Error cargando producto:", err);
                 alert(`Error: ${err.message}`);
             }
         } else {
@@ -131,211 +158,323 @@ export default function EditProducto() {
         });
     };
 
-    // ✅ Enviamos el PATCH con ID - CÓDIGO CORREGIDO
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // ✅ DEBUG: Mostrar datos que se envían
-    const datosEnviados = {
-        id: formData.id,
-        nombre: formData.nombre,
-        tipo: formData.tipo,
-        precio: parseFloat(formData.precio),
-        imagen: formData.imagen,
-        descripcion: formData.descripcion.map(item => ({
-            color: item.color,
-            talla: item.talla,
-            cantidad: parseInt(item.cantidad)
-        }))
-    };
-    
-    console.log("📤 DATOS QUE SE ENVÍAN:", datosEnviados);
-
-    try {
-        const res = await fetch(`${API_BASE_URL}/productos/updateProducto`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${APP_TOKEN}`,
-                "ngrok-skip-browser-warning": "true",
-            },
-            body: JSON.stringify(datosEnviados)
-        });
-
-        console.log("📨 Status de respuesta:", res.status);
-        console.log("📨 Status text:", res.statusText);
-        console.log("📨 Headers:", Object.fromEntries(res.headers.entries()));
-
-        // Manejar respuesta 204 (No Content)
-        if (res.status === 204) {
-            console.log("⚠️ El servidor respondió con 204 No Content");
-            alert("Producto actualizado exitosamente (sin contenido de respuesta)");
-            await fetchProductos();
-            setSelectedId("");
-            setFormData(null);
+    const handleDeleteVariation = (index) => {
+        if (formData.descripcion.length <= 1) {
+            alert("The product must have at least one variation.");
             return;
         }
 
-        // Para otros status, intentar parsear JSON
-        const textResponse = await res.text();
-        console.log("📥 Respuesta en texto:", textResponse);
-
-        let data;
-        if (textResponse) {
-            try {
-                data = JSON.parse(textResponse);
-                console.log("📥 Respuesta parseada:", data);
-            } catch (jsonError) {
-                console.error("❌ Error parseando JSON:", jsonError);
-                alert("Error: Respuesta del servidor no es JSON válido");
-                return;
-            }
-        } else {
-            data = { message: "Operación exitosa (sin datos)" };
+        if (!confirm("Are you sure you want to delete this variation?")) {
+            return;
         }
 
-        // ✅ LUEGO usar la data
-        if (res.ok) {
-            alert(data.message || "Producto actualizado exitosamente");
+        const updatedDescripcion = formData.descripcion.filter((_, i) => i !== index);
+        
+        setFormData({
+            ...formData,
+            descripcion: updatedDescripcion
+        });
+    };
+
+    const handleAddVariation = () => {
+        const newVariation = {
+            color: "red",
+            talla: "M",
+            cantidad: 0
+        };
+
+        setFormData({
+            ...formData,
+            descripcion: [...formData.descripcion, newVariation]
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!user || user.role !== 'admin') {
+            alert("You don´t have permission to update products");
+            return;
+        }
+
+        const datosEnviados = {
+            id: formData.id,
+            nombre: formData.nombre,
+            tipo: formData.tipo,
+            precio: parseFloat(formData.precio),
+            imagen: formData.imagen,
+            descripcion: formData.descripcion.map(item => ({
+                color: item.color,
+                talla: item.talla,
+                cantidad: parseInt(item.cantidad)
+            }))
+        };
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/productos/updateProducto`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${APP_TOKEN}`,
+                    "ngrok-skip-browser-warning": "true",
+                },
+                body: JSON.stringify(datosEnviados)
+            });
+
+            if (res.status === 204) {
+                alert("Product updated successfully.");
+                await fetchProductos();
+                setSelectedId("");
+                setFormData(null);
+                return;
+            }
+
+            const textResponse = await res.text();
+            let data;
+            
+            if (textResponse) {
+                data = JSON.parse(textResponse);
+            } else {
+                data = { message: "Succesfully Operation" };
+            }
+
+            if (res.ok) {
+                alert(data.message || "Product updated successfully.");
+                await fetchProductos();
+                setSelectedId("");
+                setFormData(null);
+            } else {
+                alert(`Server Error: ${data.message || `Code ${res.status}`}`);
+            }
+
+        } catch (error){
+            alert(`Error Updating the product: ${error.message}`);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!user || user.role !== 'admin') {
+            alert("You don´t have permission to delete products");
+            return;
+        }
+
+        if (!formData?.id) {
+            alert("There is no product selected to delete.");
+            return;
+        }
+
+        if (!confirm(`Are you sure that you wanna delete this product"${formData.nombre}"? This action cannot be cancelled.`)) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/productos/deleteProducto`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${APP_TOKEN}`,
+                    "ngrok-skip-browser-warning": "true",
+                },
+                body: JSON.stringify({ id: formData.id })
+            });
+
+            if (!res.ok) {
+                throw new Error(`Error ${res.status}: ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            
+            alert(data.message || "Product deleted successfully.");
             await fetchProductos();
             setSelectedId("");
             setFormData(null);
-        } else {
-            console.error("❌ Error del servidor:", data);
-            alert(`Error del servidor: ${data.message || `Código ${res.status}`}`);
-        }
 
-    } catch (err) {
-        console.log("💥 Error de red/actualización:", err);
-        alert("Error de conexión al actualizar el producto");
+        } catch (err) {
+            alert(`Error deleting the product: ${err.message}`);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="edit-container">
+                <div className="loading">Verificando permisos...</div>
+            </div>
+        );
     }
-};
+
+    if (!user || user.role !== 'admin') {
+        return (
+            <div className="edit-container">
+                <div className="error-message">
+                    You do not have permission to access this page. 
+                    Current Role: {user?.role || 'No user'}
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="edit-container">
-            <h2>Editar Producto</h2>
-
-            {loading && (
-                <div className="loading-container">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading products...</span>
-                    </div>
-                    <p>Cargando productos...</p>
+        <>
+            <div className="edit-container">
+                <h2>Product Configuration</h2>
+                <div className="user-info">
+                    <small>Connect as: {user.username} ({user.role})</small>
                 </div>
-            )}
 
-            {/* ✅ Lista con IDs en lugar de nombres */}
-            <select 
-                className="select-product" 
-                onChange={handleSelect} 
-                value={selectedId}
-                disabled={loading}
-            >
-                <option value="">Selecciona un producto...</option>
-                {productos.map(p => (
-                    <option key={p.id} value={p.id}>
-                        {p.nombre} - ${p.precio} (ID: {p.id})
-                    </option>
-                ))}
-            </select>
-
-            {productos.length === 0 && !loading && (
-                <div className="no-products">
-                    <p>No hay productos disponibles para editar.</p>
-                </div>
-            )}
-
-            {formData && (
-                <form onSubmit={handleSubmit} className="edit-form">
-                    <label>ID del Producto</label>
-                    <input
-                        type="text"
-                        value={formData.id || ''}
-                        disabled
-                        className="disabled-input"
-                    />
-
-                    <label>Nombre</label>
-                    <input
-                        name="nombre"
-                        value={formData.nombre || ''}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <label>Tipo</label>
-                    <input
-                        name="tipo"
-                        value={formData.tipo || ''}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <label>Precio</label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="precio"
-                        value={formData.precio || ''}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <label>Imagen URL</label>
-                    <input
-                        name="imagen"
-                        value={formData.imagen || ''}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <h3>Variantes</h3>
-
-                    {formData.descripcion && formData.descripcion.map((item, index) => (
-                        <div key={index} className="variant-box">
-                            <label>Color</label>
-                            <select
-                                value={item.color || 'red'}
-                                onChange={(e) =>
-                                    handleDescripcionChange(index, "color", e.target.value)
-                                }
-                                required
-                            >
-                                <option value="red">Red</option>
-                                <option value="blue">Blue</option>
-                                <option value="black">Black</option>
-                            </select>
-
-                            <label>Talla</label>
-                            <select
-                                value={item.talla || 'M'}
-                                onChange={(e) =>
-                                    handleDescripcionChange(index, "talla", e.target.value)
-                                }
-                                required
-                            >
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                            </select>
-
-                            <label>Cantidad</label>
-                            <input
-                                type="number"
-                                value={item.cantidad || 0}
-                                onChange={(e) =>
-                                    handleDescripcionChange(index, "cantidad", parseInt(e.target.value) || 0)
-                                }
-                                min="0"
-                                required
-                            />
+                {loading && (
+                    <div className="loading-container">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading products...</span>
                         </div>
-                    ))}
+                        <p>Loading Products...</p>
+                    </div>
+                )}
 
-                    <button type="submit" className="btn-save">Guardar Cambios</button>
-                </form>
-            )}
-        </div>
+                <select 
+                    className="select-product" 
+                    onChange={handleSelect} 
+                    value={selectedId}
+                    disabled={loading}
+                >
+                    <option value="">Choose one product...</option>
+                    {productos.map(p => (
+                        <option key={p.id} value={p.id}>
+                            {p.nombre} - {p.tipo} - ${p.precio} 
+                        </option>
+                    ))}
+                </select>
+
+                {productos.length === 0 && !loading && (
+                    <div className="no-products">
+                        <p>There are no products to edit.</p>
+                    </div>
+                )}
+
+                {formData && (
+                    <form onSubmit={handleSubmit} className="edit-form">
+                        <label>Producto ID</label>
+                        <input
+                            type="text"
+                            value={formData.id || ''}
+                            disabled
+                            className="disabled-input"
+                        />
+
+                        <label>Name</label>
+                        <input
+                            name="nombre"
+                            value={formData.nombre || ''}
+                            onChange={handleChange}
+                            required
+                        />
+
+                        <label>Type</label>
+                        <select
+                            name="tipo"
+                            value={formData.tipo || ''}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Choose one type</option>
+                            <option value="Women">Women</option>
+                            <option value="Men">Men</option>
+                            <option value="Kids">Kids</option>
+                        </select>
+
+                        <label>Price</label>
+                        <input
+                            type="number"
+                            step="1"
+                            name="precio"
+                            value={formData.precio || ''}
+                            onChange={handleChange}
+                            required
+                        />
+
+                        <label>Url Link Image</label>
+                        <input
+                            name="imagen"
+                            value={formData.imagen || ''}
+                            onChange={handleChange}
+                            required
+                        />
+
+                        <div className="variations-header">
+                            <h3>Variations</h3>
+                            <button 
+                                type="button" 
+                                className="btn-add-variation"
+                                onClick={handleAddVariation}
+                            >
+                                + Add Variation
+                            </button>
+                        </div>
+
+                        {formData.descripcion && formData.descripcion.map((item, index) => (
+                            <div key={index} className="variant-box">
+                                    <h4>Variation {index + 1}</h4>
+                                <label>Color</label>
+                                <select
+                                    value={item.color || 'red'}
+                                    onChange={(e) =>
+                                        handleDescripcionChange(index, "color", e.target.value)
+                                    }
+                                    required
+                                >
+                                    <option value="red">Red</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="black">Black</option>
+                                </select>
+
+                                <label>Size</label>
+                                <select
+                                    value={item.talla || 'M'}
+                                    onChange={(e) =>
+                                        handleDescripcionChange(index, "talla", e.target.value)
+                                    }
+                                    required
+                                >
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+
+                                <label>Quantity</label>
+                                <input
+                                    type="number"
+                                    value={item.cantidad || 0}
+                                    onChange={(e) =>
+                                        handleDescripcionChange(index, "cantidad", parseInt(e.target.value) || 0)
+                                    }
+                                    min="0"
+                                    required
+                                />
+
+                                    <button 
+                                        type="button" 
+                                        className="btn-delete-variation"
+                                        onClick={() => handleDeleteVariation(index)}
+                                        disabled={formData.descripcion.length <= 1}
+                                        title="Delete this variation"
+                                    >
+                                        Delete
+                                    </button>
+                            </div>
+                        ))}
+
+                        <div className="form-buttons">
+                            <button type="submit" className="btn-save">Save Changes</button>
+                            <button type="button" className="btn-delete" onClick={handleDelete}>
+                                Delete Product
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </form>
+                )}
+            </div>
+            <Footer />
+        </>
     );
 }

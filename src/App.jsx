@@ -63,7 +63,7 @@ function App() {
                   {user && (
                     <div className="user-info d-flex align-items-left">
                       <span className="user-greeting me-2">
-                        Hola, {user.username}
+                        Hello, {user.username}
                       </span>
                       <button 
                         onClick={handleLogout}
