@@ -156,7 +156,7 @@ return (
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
 
-        <Link to="/admin" className="nav-link">Back to Admin Home</Link>
+        <Link to="/admin3" className="nav-link">Back to Admin Home</Link>
       </div>
     </div>
     <Footer />

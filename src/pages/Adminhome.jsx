@@ -13,7 +13,7 @@ function Admin() {
           </div>
     
           <div className="admin-buttons-container">
-            <Link to="/registeradmin" className="admin-button spike-selling-button">
+            <Link to="/admin3" className="admin-button spike-selling-button">
               <div className="button-image-container">
                 <img 
                   src="https://i.pinimg.com/736x/6a/c7/15/6ac715accb77be2c1c4f3bcd8c973a0d.jpg" 
