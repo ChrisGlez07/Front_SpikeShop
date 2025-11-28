@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../editproduct.css";
 import Footer from "./Footer";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -498,6 +499,9 @@ export default function EditProducto() {
                         <br />
                     </form>
                 )}
+                <Link to="/admin2" className="nav-link home-link">
+                    Go to Stock Home
+                </Link>
             </div>
         <Footer />
     </>

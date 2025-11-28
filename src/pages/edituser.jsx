@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../edituser.css";
 import Footer from "./Footer";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -404,6 +405,10 @@ export default function EditUser() {
                         </div>
                     </form>
                 )}
+
+                                <Link to="/admin3" className="nav-link home-link">
+                    Go to User Home
+                </Link>
             </div>
             <Footer />
         </>
