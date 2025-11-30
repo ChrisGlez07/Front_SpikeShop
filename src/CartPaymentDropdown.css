@@ -289,3 +289,66 @@
         padding: 15px;
     }
 }
+/* Agregar al archivo CartPaymentDropdown.css existente */
+
+.product-name {
+    flex: 2;
+    text-align: left;
+    font-weight: 600;
+}
+
+.product-quantity {
+    flex: 1;
+    text-align: center;
+    background: #6c5ce7;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+
+.product-price {
+    flex: 1;
+    text-align: right;
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+.product-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.8rem;
+    color: #636e72;
+    border-bottom: 1px solid #e9ecef;
+    gap: 10px;
+}
+
+.product-preview:last-child {
+    border-bottom: none;
+}
+.product-details {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #888;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 8px;
+}
+
+.product-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.8rem;
+    color: #636e72;
+    border-bottom: 1px solid #e9ecef;
+    gap: 8px;
+}
+
+.product-preview:last-child {
+    border-bottom: none;
+}
