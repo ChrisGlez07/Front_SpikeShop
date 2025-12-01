@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate, } from 'react-router-dom';
 import Register from './Register.jsx';
 import '../Login.css';
 import Footer from './Footer.jsx';
@@ -10,6 +10,8 @@ const Login = ({ onUserLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -65,7 +67,9 @@ const Login = ({ onUserLogin }) => {
 
       if (response.ok && data.message === "Login successful") {
         console.log("Login exitoso - Datos del usuario:", data.data.user);
-        alert("Login successfully");
+        setPopupMessage("Login successfully");
+        setShowPopup(true);
+
         
         if (data.data && data.data.user) {
           const userData = {
@@ -87,7 +91,10 @@ const Login = ({ onUserLogin }) => {
           const stored = localStorage.getItem('user_session');
           console.log("Usuario en localStorage:", JSON.parse(stored));
           
-          navigate('/dashboard');
+          setEmail("");
+          setPassword("");
+
+          navigate('/');
         } else {
           setError("User data is missing in the response");
         }
@@ -144,6 +151,15 @@ const Login = ({ onUserLogin }) => {
           <Route path="register" element={<Register />} />
         </Routes>
       </div>
+
+            {showPopup && (
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="popup-box">
+            <p>{popupMessage}</p>
+            <button onClick={() => setShowPopup(false)}>OK</button>
+          </div>
+        </div>
+      )}
       <Footer />
     </>
   );

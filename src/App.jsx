@@ -4,7 +4,6 @@ import Home from './pages/home.jsx'
 import About from './pages/about.jsx'
 import Contact from './pages/contact.jsx'
 import Registeradmin from './pages/registeradmin.jsx'
-import Search from './pages/search.jsx'
 import Login from './pages/Login.jsx'
 import Createproduct from './pages/createproduct.jsx'
 import EditProduct from './pages/editproduct.jsx'
@@ -96,8 +95,6 @@ function App() {
                     <Link to="/admin" className="nav-link">Admin</Link>
                   )}
                   
-                  
-                  <Search />
                 </nav>
               </div>
             </div>
