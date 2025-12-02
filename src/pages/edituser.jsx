@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../edituser.css";
 import Footer from "./Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 const APP_TOKEN = import.meta.env.VITE_TOKEN;
@@ -26,13 +27,13 @@ export default function EditUser() {
                     setUser(userData);
                     
                     if (userData.role !== 'admin') {
-                        alert("You don't have permission to access this page");
-                        navigate('/items');
+                        toast.error("You don't have permission to access this page");
+                        setTimeout(() => navigate("/items"), 2500);
                         return;
                     }
                 } else {
-                    alert("You must log in to access this page");
-                    navigate('/login');
+                    toast.error("You must log in to access this page");
+                    setTimeout(() => navigate("/login"), 2500);
                     return;
                 }
             } catch (error) {
@@ -85,7 +86,7 @@ export default function EditUser() {
 
         } catch (error) {
             console.error("Error obtaining users:", error.message);
-            alert("Error loading users: " + error.message);
+            toast.error("Error loading users: " + error.message);
             setUsers([]);
         } finally {
             setLoading(false);
@@ -135,7 +136,7 @@ export default function EditUser() {
                     throw new Error("The data for the selected user is missing.");
                 }
             } catch (err) {
-                alert(`Error: ${err.message}`);
+                toast.error(`Error: ${err.message}`);
             }
         } else {
             setFormData(null);
@@ -153,18 +154,18 @@ export default function EditUser() {
         e.preventDefault();
 
         if (!user || user.role !== 'admin') {
-            alert("You don't have permission to update users");
+            toast.error("You don't have permission to update users");
             return;
         }
 
         if (!formData.username || !formData.email || !formData.role) {
-            alert("Please fill all required fields");
+            toast.error("Please fill all required fields");
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-            alert("Please enter a valid email address");
+            toast.error("Please enter a valid email address");
             return;
         }
 
@@ -195,32 +196,32 @@ export default function EditUser() {
             }
 
             if (res.ok) {
-                alert(data?.message || "User updated successfully.");
+                toast.success(data?.message || "User updated successfully.");
                 await fetchUsers();
                 setSelectedId("");
                 setFormData(null);
             } else {
-                alert(`Error: ${data?.message || `Code ${res.status}`}`);
+                toast.error(`Error: ${data?.message || `Code ${res.status}`}`);
             }
 
         } catch (error){
-            alert(`Error updating the user: ${error.message}`);
+            toast.error(`Error updating the user: ${error.message}`);
         }
     };
 
     const handleDelete = async () => {
         if (!user || user.role !== 'admin') {
-            alert("You don't have permission to delete users");
+            toast.error("You don't have permission to delete users");
             return;
         }
 
         if (!formData?.id) {
-            alert("There is no user selected to delete.");
+            toast.error("There is no user selected to delete.");
             return;
         }
 
-        if (formData.id === user.id) {
-            alert("You cannot delete your own account.");
+        if (formData.email === user.email) {
+            toast.error("You cannot delete your own account.");
             return;
         }
 
@@ -271,7 +272,7 @@ export default function EditUser() {
             <div className="edit-container">
                 <div className="error-message">
                     You do not have permission to access this page. 
-                    Current Role: {user?.role || 'No user'}
+                    Current Role: {user?.role || 'No Admin'}
                 </div>
             </div>
         );
@@ -279,6 +280,25 @@ export default function EditUser() {
 
     return (
         <>
+                <Toaster
+        position="top-center"
+        toastOptions={{
+          success: {
+            style: {
+              background: "#4BB543",
+              color: "white",
+              fontWeight: "bold"
+            }
+          },
+          error: {
+            style: {
+              background: "#DC3545",
+              color: "white",
+              fontWeight: "bold"
+            }
+          }
+        }}
+      />
             <div className="edit-container">
                 <h2>User Management</h2>
                 <div className="user-info">

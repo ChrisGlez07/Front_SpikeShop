@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import '../registeradmin.css';
 import Footer from './Footer.jsx';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@ const Register = () => {
 
   const API_BASE_URL = import.meta.env.VITE_BASE_URL;
   const APP_TOKEN = import.meta.env.VITE_TOKEN;
-  
+
   useEffect(() => {
     console.log(`Username: ${username}`);
     console.log(`Email: ${email}`);
@@ -25,23 +26,23 @@ const Register = () => {
     console.log(`User Type: ${role}`);
   }, [username, email, password, role]);
 
-    useEffect(() => {
+  useEffect(() => {
     const checkUserAuth = () => {
       try {
         const savedUser = localStorage.getItem('user_session');
-        
+
         if (savedUser) {
           const userData = JSON.parse(savedUser);
           setUser(userData);
-          
+
           if (userData.role !== 'admin') {
-            alert("You don´t have permission to access this page");
-            navigate('/items');
+            toast.error("You don´t have permission to access this page");
+            setTimeout(() => navigate('/items'), 2500);
             return;
           }
         } else {
-          alert("You must log in to access this page");
-          navigate('/login');
+          toast.error("You must log in to access this page");
+          setTimeout(() => navigate('/login'), 2500);
           return;
         }
       } catch (error) {
@@ -57,8 +58,8 @@ const Register = () => {
   }, [navigate]);
 
   const handleRegister = async () => {
-    if (!username || !email || !password) {
-      setError("Please complete all fields");
+    if (!username || !email || !password || !role) {
+      toast.error("Please complete all fields");
       return;
     }
 
@@ -73,95 +74,122 @@ const Register = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${APP_TOKEN}`,
         },
-        
+
         body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-          role: role 
+          username,
+          email,
+          password,
+          role
         })
       });
-       console.log(response);
-      const data = await response.json();
 
-      if (response.ok && data.success) {
-        console.log("Succesfull Register:", data);
-        setSuccess("User registered successfully");
-        
+      const data = await response.json();
+      console.log("API Response:", data);
+
+      if (response.ok ) {
+        toast.success("User registered successfully");
+
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setUserType("");
+
         setTimeout(() => {
-          navigate('/login');
+          navigate('/admin3');
         }, 2000);
       } else {
-        setError(data.message || "Register Error");
-        setSuccess("");
+        toast.error(data.message || "Register Error");
       }
     } catch (error) {
       console.error("Register Error:", error);
-      setError("Connection error. Please try again.");
+      toast.error("Connection error. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-return (
-  <>
-    <div className="adminRegister">
-      <div className="container-items">
-        <div className="userRegister">
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-          />
-        </div>
+  return (
+    <>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          success: {
+            style: {
+              background: '#4BB543',
+              color: 'white',
+              fontWeight: 'bold',
+            },
+          },
+          error: {
+            style: {
+              background: '#ec5463ff',
+              color: 'white',
+              fontWeight: 'bold',
+            },
+          },
+        }}
+      />
 
-        <div className="emailRegister">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
+      <div className="adminRegister">
+        <div className="container-items">
 
-        <div className="passwordRegister">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          
-          />
-        </div>
- <div className="userTypeRegister">
-          <select
-            value={role}
-            onChange={(e) => setUserType(e.target.value)}
-            className="user-type-select"
+          <div className="userRegister">
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+            />
+          </div>
+
+          <div className="emailRegister">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+          </div>
+
+          <div className="passwordRegister">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
+          </div>
+
+          <div className="userTypeRegister">
+            <select
+              value={role}
+              onChange={(e) => setUserType(e.target.value)}
+              className="user-type-select"
+            >
+              <option value="" disabled>Select User Type</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <button
+            className="btnRegister"
+            onClick={handleRegister}
+            disabled={isLoading}
           >
-            <option value="" disabled>Select User Type</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+            {isLoading ? "Registrando..." : "Register"}
+          </button>
+
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+
+          <Link to="/admin3" className="nav-link">Back to User Home</Link>
         </div>
-        <button 
-          className="btnRegister" 
-          onClick={handleRegister}
-          disabled={isLoading}
-        >
-          {isLoading ? "Registrando..." : "Register"}
-        </button>
-
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
-
-        <Link to="/admin3" className="nav-link">Back to User Home</Link>
       </div>
-    </div>
-    <Footer />
-  </>
-);
+
+      <Footer />
+    </>
+  );
 };
 
 export default Register;

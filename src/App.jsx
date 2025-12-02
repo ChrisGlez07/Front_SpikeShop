@@ -12,14 +12,16 @@ import Items from './pages/Items.jsx'
 import Admin from './pages/adminhome.jsx'
 import Admin2 from './pages/Adminhome2.jsx'
 import Admin3 from './pages/Adminhome3.jsx'
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Toast } from 'bootstrap'
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [count, setCount] = useState(0)
-  const [user, setUser] = useState(null) // Estado para el usuario
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate();
 
-  // Cargar usuario del localStorage al iniciar
   useEffect(() => {
     const savedUser = localStorage.getItem('user_session');
     if (savedUser) {
@@ -32,26 +34,37 @@ function App() {
     }
   }, []);
 
-  // Función para actualizar el usuario desde Login
   const handleUserLogin = (userData) => {
     setUser(userData);
   };
 
-  // Función para logout
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user_session');
+    toast.success("Logged out successfully");
+    setTimeout(() => navigate("/"), 2500);
   };
 
   return (
     <>
+          <Toaster
+        position="top-center"
+        toastOptions={{
+          success: {
+            style: {
+              background: "#4BB543",
+              color: "white",
+              fontWeight: "bold"
+            }
+          }
+        }}
+      />
       <div className='containerHome'>
         <header className="header">
           <div className="container">
             <div className="row align-items-center">
               <div className="col-md-6">
                 <div className="d-flex align-items-center">
-                  {/* Logo */}
                   <Link to="/items" className="image-link me-2">
                     <img 
                       src="https://i.postimg.cc/LsYz2mRT/spie-Top.png" 
@@ -60,7 +73,6 @@ function App() {
                     />
                   </Link>
                   
-                  {/* Saludo y Logout al lado del logo */}
                   {user && (
                     <div className="user-info d-flex align-items-left">
                       <span className="user-greeting me-2">
@@ -83,14 +95,12 @@ function App() {
                   <Link to="/about" className="nav-link">About us</Link>
                   <Link to="/contact" className="nav-link">Contact us</Link>
                   
-                  {/* Mostrar Login si no hay usuario */}
                   {!user && (
                     <Link to="/login" className="nav-link">Login</Link>
                   )}
                   
                   <Link to="/items" className="nav-link">Online Shop</Link>
                   
-                  {/* Solo mostrar Admin si el usuario es admin */}
                   {user && user.role === 'admin' && (
                     <Link to="/admin" className="nav-link">Admin</Link>
                   )}

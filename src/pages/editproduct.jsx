@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../editproduct.css";
 import Footer from "./Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 const APP_TOKEN = import.meta.env.VITE_TOKEN;
@@ -25,13 +26,13 @@ export default function EditProducto() {
                     setUser(userData);
                     
                     if (userData.role !== 'admin') {
-                        alert("You don´t have permission to access this page");
-                        navigate('/items');
+                        toast.error("You don´t have permission to access this page");
+                        setTimeout(() => navigate("/items"), 2500);
                         return;
                     }
                 } else {
-                    alert("You must log in to access this page");
-                    navigate('/login');
+                    toast.error("You must log in to access this page");
+                    setTimeout(() => navigate("/login"), 2500);
                     return;
                 }
             } catch (error) {
@@ -161,7 +162,7 @@ export default function EditProducto() {
 
     const handleDeleteVariation = (index) => {
         if (formData.descripcion.length <= 1) {
-            alert("The product must have at least one variation.");
+            toast.error("The product must have at least one variation.");
             return;
         }
 
@@ -194,7 +195,7 @@ export default function EditProducto() {
         e.preventDefault();
 
         if (!user || user.role !== 'admin') {
-            alert("You don´t have permission to update products");
+            toast.error("You don´t have permission to update products");
             return;
         }
 
@@ -223,7 +224,7 @@ export default function EditProducto() {
             });
 
             if (res.status === 204) {
-                alert("Product updated successfully.");
+                toast.success("Product updated successfully.");
                 await fetchProductos();
                 setSelectedId("");
                 setFormData(null);
@@ -240,7 +241,7 @@ export default function EditProducto() {
             }
 
             if (res.ok) {
-                alert(data.message || "Product updated successfully.");
+                toast.success(data.message || "Product updated successfully.");
                 await fetchProductos();
                 setSelectedId("");
                 setFormData(null);
@@ -255,12 +256,12 @@ export default function EditProducto() {
 
     const handleDelete = async () => {
         if (!user || user.role !== 'admin') {
-            alert("You don´t have permission to delete products");
+            toast.error("You don´t have permission to delete products");
             return;
         }
 
         if (!formData?.id) {
-            alert("There is no product selected to delete.");
+            toast.error("There is no product selected to delete.");
             return;
         }
 
@@ -285,20 +286,20 @@ export default function EditProducto() {
 
             const data = await res.json();
             
-            alert(data.message || "Product deleted successfully.");
+            toast.success(data.message || "Product deleted successfully.");
             await fetchProductos();
             setSelectedId("");
             setFormData(null);
 
         } catch (err) {
-            alert(`Error deleting the product: ${err.message}`);
+            toast.error(`Error deleting the product: ${err.message}`);
         }
     };
 
     if (isLoading) {
         return (
             <div className="edit-container">
-                <div className="loading">Verificando permisos...</div>
+                <div className="loading">Verifying Permissions...</div>
             </div>
         );
     }
@@ -308,7 +309,7 @@ export default function EditProducto() {
             <div className="edit-container">
                 <div className="error-message">
                     You do not have permission to access this page. 
-                    Current Role: {user?.role || 'No user'}
+                    Current Role: {user?.role || 'No Admin'}
                 </div>
             </div>
         );
@@ -316,6 +317,25 @@ export default function EditProducto() {
 
     return (
         <>
+        <Toaster
+        position="top-center"
+        toastOptions={{
+          success: {
+            style: {
+              background: "#4BB543",
+              color: "white",
+              fontWeight: "bold"
+            }
+          },
+          error: {
+            style: {
+              background: "#DC3545",
+              color: "white",
+              fontWeight: "bold"
+            }
+          }
+        }}
+      />
             <div className="edit-container">
                 <h2>Product Configuration</h2>
                 <div className="user-info">
