@@ -26,6 +26,12 @@ const Register = () => {
       return;
     }
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    toast.error("Please enter a valid email with @");
+    return;
+  }
+
     setIsLoading(true);
 
     try {
@@ -70,7 +76,6 @@ const Register = () => {
   return (
     <div className="form-container">
 
-      {/* TOASTER PERSONALIZADO */}
       <Toaster
         position="top-center"
         toastOptions={{

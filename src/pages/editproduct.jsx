@@ -136,7 +136,7 @@ export default function EditProducto() {
                     throw new Error("The data for the selected product is missing.");
                 }
             } catch (err) {
-                alert(`Error: ${err.message}`);
+                toast.error(`Error: ${err.message}`);
             }
         } else {
             setFormData(null);
@@ -166,15 +166,43 @@ export default function EditProducto() {
             return;
         }
 
-        if (!confirm("Are you sure you want to delete this variation?")) {
-            return;
-        }
-
-        const updatedDescripcion = formData.descripcion.filter((_, i) => i !== index);
-        
-        setFormData({
-            ...formData,
-            descripcion: updatedDescripcion
+        toast((t) => (
+            <div className="toast-confirm-container">
+                <p>Are you sure you want to delete this variation?</p>
+                <div className="toast-buttons">
+                    <button 
+                        onClick={() => {
+                            toast.dismiss(t.id);
+                            
+                            const updatedDescripcion = formData.descripcion.filter((_, i) => i !== index);
+                            
+                            setFormData({
+                                ...formData,
+                                descripcion: updatedDescripcion
+                            });
+                            
+                            toast.success("Variation successfully deleted.", { 
+                                duration: 3000, 
+                                id: t.id
+                            });
+                        }} 
+                        className="btn-toast-confirm"
+                        style={{ background: '#dc3545', color: 'white', marginRight: '8px' }}
+                    >
+                        Delete
+                    </button>
+                    <button 
+                        onClick={() => toast.dismiss(t.id)} 
+                        className="btn-toast-cancel"
+                        style={{ background: '#6c757d', color: 'white' }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), { 
+            duration: Infinity, 
+            className: 'custom-confirm-toast', 
         });
     };
 
@@ -237,7 +265,7 @@ export default function EditProducto() {
             if (textResponse) {
                 data = JSON.parse(textResponse);
             } else {
-                data = { message: "Succesfully Operation" };
+                data = { message: "Successfully Operation" };
             }
 
             if (res.ok) {
@@ -246,11 +274,11 @@ export default function EditProducto() {
                 setSelectedId("");
                 setFormData(null);
             } else {
-                alert(`Server Error: ${data.message || `Code ${res.status}`}`);
+                toast.error(`Server Error: ${data.message || `Code ${res.status}`}`);
             }
 
         } catch (error){
-            alert(`Error Updating the product: ${error.message}`);
+            toast.error(`Error Updating the product: ${error.message}`);
         }
     };
 
@@ -265,10 +293,39 @@ export default function EditProducto() {
             return;
         }
 
-        if (!confirm(`Are you sure that you wanna delete this product"${formData.nombre}"? This action cannot be cancelled.`)) {
-            return;
-        }
+        const productoNombre = formData.nombre;
+        const productoId = formData.id;
 
+        toast((t) => (
+            <div className="toast-confirm-container">
+                <p>Are you sure that you want to delete "{productoNombre}"? This action cannot be cancelled.</p>
+                <div className="toast-buttons">
+                    <button 
+                        onClick={() => {
+                            toast.dismiss(t.id);
+                            performDelete(productoId, t.id); 
+                        }} 
+                        className="btn-toast-delete"
+                        style={{ background: '#dc3545', color: 'white', marginRight: '8px', fontWeight: 'bold' }}
+                    >
+                        Yes, Delete Product
+                    </button>
+                    <button 
+                        onClick={() => toast.dismiss(t.id)} 
+                        className="btn-toast-cancel"
+                        style={{ background: '#6c757d', color: 'white' }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), { 
+            duration: Infinity,
+            className: 'custom-confirm-toast', 
+        });
+    };
+
+const performDelete = async (id, toastId) => {
         try {
             const res = await fetch(`${API_BASE_URL}/productos/deleteProducto`, {
                 method: "DELETE",
@@ -277,7 +334,7 @@ export default function EditProducto() {
                     "Authorization": `Bearer ${APP_TOKEN}`,
                     "ngrok-skip-browser-warning": "true",
                 },
-                body: JSON.stringify({ id: formData.id })
+                body: JSON.stringify({ id: id })
             });
 
             if (!res.ok) {
@@ -286,13 +343,20 @@ export default function EditProducto() {
 
             const data = await res.json();
             
-            toast.success(data.message || "Product deleted successfully.");
+            toast.success(data.message || "Product deleted successfully.", { 
+                duration: 1000, 
+                id: toastId 
+            });
+            
             await fetchProductos();
             setSelectedId("");
             setFormData(null);
 
         } catch (err) {
-            toast.error(`Error deleting the product: ${err.message}`);
+            toast.error(`Error deleting the product: ${err.message}`, { 
+                duration: 1000, 
+                id: toastId 
+            });
         }
     };
 

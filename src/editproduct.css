@@ -268,3 +268,62 @@
   cursor: pointer;
   font-size: 16px;
 }
+
+.toast-confirm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px; 
+    width: 280px; 
+}
+
+.toast-confirm-container p {
+    color: #444444; 
+    margin-bottom: 12px;
+    font-size: 1em;
+}
+
+.toast-buttons {
+    display: flex;
+    justify-content: flex-end; 
+    width: 100%;
+    gap: 8px; 
+    margin-top: 5px;
+}
+
+.toast-buttons button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: bold;
+}
+
+.custom-confirm-toast {
+    background: #F5E8D7;
+    color: #C06060; 
+    font-weight: bold; 
+    padding: 15px; 
+}
+
+
+.btn-toast-delete {
+    background: #DC3545 !important;
+    color: white !important;
+}
+
+.btn-toast-delete:hover {
+    background: #B02A37 !important; 
+}
+
+
+
+.btn-toast-cancel {
+    background: #C06060; 
+    color: #FFFFFF;
+}
+
+.btn-toast-cancel:hover {
+    background: #9D4949 !important;
+}

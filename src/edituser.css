@@ -242,7 +242,7 @@
   font-weight: 500;
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .form-columns-container {
     grid-template-columns: 1fr;
@@ -262,4 +262,93 @@
   .edit-container h2 {
     font-size: 24px;
   }
+}
+
+.toast-confirm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px; 
+    width: 280px; 
+}
+
+.toast-confirm-container p {
+    color: #444444; 
+    margin-bottom: 12px;
+    font-size: 1em;
+}
+
+.toast-buttons {
+    display: flex;
+    justify-content: flex-end; 
+    width: 100%;
+    gap: 8px; 
+    margin-top: 5px;
+}
+
+.toast-buttons button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px; 
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: bold;
+}
+
+.custom-confirm-toast {
+    background: #F5E8D7; 
+    color: #C06060; 
+    font-weight: bold; 
+    padding: 15px; 
+}
+
+
+.btn-toast-delete {
+    background: #DC3545 !important; 
+    color: white !important;
+}
+
+.btn-toast-delete:hover {
+    background: #B02A37 !important; 
+}
+
+
+.btn-toast-cancel {
+    background: #C06060; 
+    color: #FFFFFF;
+}
+
+.btn-toast-cancel:hover {
+    background: #9D4949 !important; 
+}
+
+.password-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.password-input {
+    width: 100%;
+    padding-right: 60px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 5px;
+    padding: 5px 8px;
+    background: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.password-hint {
+    display: block;
+    margin-top: -5px;
+    margin-bottom: 15px;
+    font-size: 0.75em;
+    color: #666;
 }

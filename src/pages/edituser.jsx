@@ -225,12 +225,41 @@ export default function EditUser() {
             return;
         }
 
-        if (!confirm(`Are you sure you want to delete the user "${formData.username}"? This action cannot be undone.`)) {
-            return;
-        }
+        const usernameToDelete = formData.username;
+        const userIdToDelete = formData.id;
 
+        toast((t) => (
+            <div className="toast-confirm-container">
+                <p>Are you sure you want to delete the user <strong>"{usernameToDelete}"</strong>? This action cannot be undone.</p>
+                <div className="toast-buttons">
+                    <button 
+                        onClick={() => {
+                            toast.dismiss(t.id); 
+                            performDelete(userIdToDelete, t.id); 
+                        }} 
+                        className="btn-toast-delete"
+                        style={{ background: '#DC3545', color: 'white', marginRight: '8px', fontWeight: 'bold' }}
+                    >
+                        Yes, Delete User
+                    </button>
+                    <button 
+                        onClick={() => toast.dismiss(t.id)} 
+                        className="btn-toast-cancel"
+                        style={{ background: '#6c757d', color: 'white' }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        ), { 
+            duration: Infinity, 
+            className: 'custom-confirm-toast',
+        });
+    };
+
+    const performDelete = async (id, toastId) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/users/delete/${formData.id}`, {
+            const res = await fetch(`${API_BASE_URL}/users/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -245,13 +274,20 @@ export default function EditUser() {
 
             const data = await res.json();
             
-            alert(data.message || "User deleted successfully.");
+            toast.success(data.message || "User deleted successfully.", { 
+                duration: 3000, 
+                id: toastId 
+            });
+            
             await fetchUsers();
             setSelectedId("");
             setFormData(null);
 
         } catch (err) {
-            alert(`Error deleting the user: ${err.message}`);
+            toast.error(`Error deleting the user: ${err.message}`, { 
+                duration: 3000, 
+                id: toastId 
+            });
         }
     };
 
@@ -280,7 +316,7 @@ export default function EditUser() {
 
     return (
         <>
-                <Toaster
+            <Toaster
         position="top-center"
         toastOptions={{
           success: {
@@ -426,7 +462,7 @@ export default function EditUser() {
                     </form>
                 )}
 
-                                <Link to="/admin3" className="nav-link home-link">
+                <Link to="/admin3" className="nav-link home-link">
                     Go to User Home
                 </Link>
             </div>
