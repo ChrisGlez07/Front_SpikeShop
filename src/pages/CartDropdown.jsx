@@ -13,9 +13,10 @@ const CartDropdown = ({
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.precioNumerico * item.quantity), 0);
 
+  const MAX_QUANTITY = 10; 
+
   return (
     <div className="cart-dropdown-container">
-      {/* Botón del carrito */}
       <button className="cart-toggle-btn" onClick={onToggle}>
         🛒
         {totalItems > 0 && (
@@ -23,7 +24,6 @@ const CartDropdown = ({
         )}
       </button>
 
-      {/* Dropdown del carrito */}
       {isOpen && (
         <div className="cart-dropdown">
           <div className="cart-header">
@@ -66,6 +66,7 @@ const CartDropdown = ({
                       <button 
                         className="quantity-btn"
                         onClick={() => onUpdateQuantity(index, item.quantity + 1)}
+                        disabled={item.quantity >= MAX_QUANTITY}
                       >
                         +
                       </button>
